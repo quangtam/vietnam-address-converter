@@ -1,8 +1,6 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages (Fallback)
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
@@ -11,7 +9,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: "pages-fallback"
   cancel-in-progress: false
 
 jobs:
@@ -23,6 +21,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build library
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

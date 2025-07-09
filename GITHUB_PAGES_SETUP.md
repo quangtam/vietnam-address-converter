@@ -4,9 +4,8 @@
 
 ### 1. **Tạo GitHub Repository**
 ```bash
-git init
 git add .
-git commit -m "feat: Initial commit with GitHub Pages demo"
+git commit -m "feat: Add GitHub Pages demo with fixed workflows"
 git remote add origin https://github.com/quangtam/vietnam-address-converter.git
 git branch -M main
 git push -u origin main
@@ -17,6 +16,12 @@ git push -u origin main
 2. Vào **Settings** → **Pages**
 3. Chọn **Source**: `GitHub Actions`
 4. Workflow sẽ tự động chạy và deploy
+
+### 3. **Troubleshooting**
+Nếu gặp lỗi "Dependencies lock file is not found":
+- Đảm bảo `package-lock.json` có trong repository
+- Hoặc sử dụng workflow fallback (manual trigger)
+- Workflow đã được tối ưu để không cần build Node.js cho GitHub Pages
 
 ### 3. **Truy cập Demo**
 - URL: `https://quangtam.github.io/vietnam-address-converter`
