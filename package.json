@@ -19,6 +19,7 @@
     "dev": "rollup -c -w",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:performance": "npm run build && node test-simple-performance.mjs",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "prepare": "npm run build",

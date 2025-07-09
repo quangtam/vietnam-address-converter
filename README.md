@@ -13,10 +13,23 @@ Thư viện JavaScript/TypeScript để tự động chuyển đổi địa ch�
 
 - 🔄 **Chuyển đổi địa chỉ tự động**: Chuyển đổi địa chỉ cũ sang địa chỉ mới theo quy định mới nhất
 - 📊 **Dữ liệu mapping thực tế**: Sử dụng dữ liệu mapping chính thức từ cơ sở dữ liệu hành chính
-- 🚀 **Hoạt động offline**: Dữ liệu được tích hợp sẵn trong thư viện, không cần kết nối Internet
+- 🚀 **Hiệu suất cao**: ~1ms/địa chỉ, 956 địa chỉ/giây với data indexing tối ưu
 - 🎯 **Cấu trúc hành chính mới**: Loại bỏ cấp quận/huyện theo Nghị quyết 202/2025/QH15
 - 🔍 **Tìm kiếm thông minh**: Sử dụng fuzzy matching để tìm địa chỉ tương đồng
 - 📱 **Đa nền tảng**: Hoạt động trên Node.js và trình duyệt
+- ⚡ **Hoạt động offline**: Dữ liệu được tích hợp sẵn trong thư viện, không cần kết nối Internet
+
+## 📈 Performance
+
+| Metric | Value |
+|--------|--------|
+| **Tốc độ chuyển đổi** | ~1ms per address |
+| **Throughput** | 956 addresses/second |
+| **Initialization** | ~27ms |
+| **Success rate** | 100% |
+| **Memory usage** | Optimized với caching |
+
+👉 **[Xem chi tiết Performance Guide](./PERFORMANCE.md)**
 
 ## 🎯 Demo Trực Tuyến
 
