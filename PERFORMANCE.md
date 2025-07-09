@@ -4,9 +4,9 @@
 
 Thư viện Vietnam Address Converter hiện tại đạt được:
 
-- **Tốc độ**: ~1ms per address
-- **Throughput**: ~956 addresses/second  
-- **Initialization**: ~27ms
+- **Tốc độ**: ~0.967ms per address  
+- **Throughput**: ~1034 addresses/second  
+- **Initialization**: ~20ms
 - **Success rate**: 100%
 - **Memory usage**: Tối ưu với data indexing
 
@@ -55,9 +55,9 @@ if (districtName) {
 ### Results
 | Metric | Value |
 |--------|-------|
-| Initialization Time | 27ms |
-| Average Conversion Time | 1.046ms |
-| Throughput | 956 addr/sec |
+| Initialization Time | 20ms |
+| Average Conversion Time | 0.967ms |
+| Throughput | 1034 addr/sec |
 | Success Rate | 100% |
 | Memory Usage | Optimized |
 

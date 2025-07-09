@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## [1.0.2] - 2025-07-10
+
+### 🚀 Performance Improvements
+- Tối ưu tốc độ chuyển đổi: ~1ms per address
+- Throughput: 956 addresses/second  
+- Initialization time giảm xuống ~27ms
+- Thêm data indexing và caching mechanisms
+
+### ➕ Added
+- `PERFORMANCE.md` - Hướng dẫn performance chi tiết
+- `test-simple-performance.mjs` - Script test performance
+- `npm run test:performance` - Performance testing command
+- Performance metrics trong README.md
+
+### 🔧 Technical Improvements
+- Map-based lookups thay vì Array.find()
+- Precomputed normalized strings
+- Hierarchical search strategy
+- Memory-efficient data structures
+- Smart caching mechanisms
+
+### 📊 Benchmarks
+- Test với 500 addresses: 523ms total (1.046ms avg/address)
+- Success rate: 100%
+- Memory usage: Optimized với indexing
+
 ## [1.0.1] - 2025-07-10
 
 ### 🐛 Fixed

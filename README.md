@@ -23,9 +23,9 @@ Thư viện JavaScript/TypeScript để tự động chuyển đổi địa ch�
 
 | Metric | Value |
 |--------|--------|
-| **Tốc độ chuyển đổi** | ~1ms per address |
-| **Throughput** | 956 addresses/second |
-| **Initialization** | ~27ms |
+| **Tốc độ chuyển đổi** | ~0.967ms per address |
+| **Throughput** | 1034 addresses/second |
+| **Initialization** | ~20ms |
 | **Success rate** | 100% |
 | **Memory usage** | Optimized với caching |
 

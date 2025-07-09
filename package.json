@@ -1,12 +1,12 @@
 {
   "name": "vietnam-address-converter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết 202/2025/QH15",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://github.com/quangtam/vietnam-address-converter",
+  "homepage": "https://quangtam.github.io/vietnam-address-converter/",
   "repository": {
     "type": "git",
     "url": "https://github.com/quangtam/vietnam-address-converter.git"
