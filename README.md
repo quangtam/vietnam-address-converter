@@ -2,6 +2,8 @@
 
 Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
 
+🌐 **[Demo Online](https://quangtam.github.io/vietnam-address-converter)** | 📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)**
+
 ## ✨ Tính năng chính
 
 - 🔄 **Chuyển đổi địa chỉ tự động**: Chuyển đổi địa chỉ cũ sang địa chỉ mới theo quy định mới nhất
