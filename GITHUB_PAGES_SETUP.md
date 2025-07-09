@@ -1,27 +1,51 @@
 # 🚀 Hướng dẫn Setup GitHub Pages Demo
 
-## 📋 Các bước setup
+## ⚠️ Troubleshooting GitHub Actions Error
+
+Nếu gặp lỗi: `Get Pages site failed. Please verify that the repository has Pages enabled...`
+
+### Bước 1: Bật GitHub Pages thủ công
+1. Vào repository GitHub: `https://github.com/quangtam/vietnam-address-converter`
+2. Vào **Settings** → **Pages** (ở sidebar bên trái)
+3. Trong **Source**, chọn **GitHub Actions** (không chọn Deploy from branch)
+4. Nhấn **Save**
+
+### Bước 2: Kiểm tra Permissions
+1. Vào **Settings** → **Actions** → **General**
+2. Scroll xuống **Workflow permissions**
+3. Chọn **Read and write permissions**
+4. Tick vào **Allow GitHub Actions to create and approve pull requests**
+5. Nhấn **Save**
+
+### Bước 3: Chạy workflow thủ công
+1. Vào tab **Actions**
+2. Chọn workflow **Manual Deploy Pages**
+3. Nhấn **Run workflow** → **Run workflow**
+
+## 📋 Các bước setup (sau khi sửa lỗi)
 
 ### 1. **Tạo GitHub Repository**
 ```bash
 git add .
-git commit -m "feat: Add GitHub Pages demo with fixed workflows"
-git remote add origin https://github.com/quangtam/vietnam-address-converter.git
-git branch -M main
-git push -u origin main
+git commit -m "fix: Add multiple GitHub Pages workflows"
+git push origin main
 ```
 
-### 2. **Bật GitHub Pages**
-1. Vào repository GitHub: `https://github.com/quangtam/vietnam-address-converter`
-2. Vào **Settings** → **Pages**
-3. Chọn **Source**: `GitHub Actions`
-4. Workflow sẽ tự động chạy và deploy
+### 2. **Bật GitHub Pages** (quan trọng!)
+1. Vào repository GitHub
+2. **Settings** → **Pages**  
+3. **Source**: Chọn **GitHub Actions** (KHÔNG chọn branch)
+4. **Save**
 
-### 3. **Troubleshooting**
-Nếu gặp lỗi "Dependencies lock file is not found":
-- Đảm bảo `package-lock.json` có trong repository
-- Hoặc sử dụng workflow fallback (manual trigger)
-- Workflow đã được tối ưu để không cần build Node.js cho GitHub Pages
+### 3. **Set Permissions**
+1. **Settings** → **Actions** → **General**
+2. **Workflow permissions**: **Read and write permissions**
+3. Tick **Allow GitHub Actions to create and approve pull requests**
+
+### 4. **Test Manual Deploy**
+1. **Actions** tab
+2. Chọn **Manual Deploy Pages**
+3. **Run workflow**
 
 ### 3. **Truy cập Demo**
 - URL: `https://quangtam.github.io/vietnam-address-converter`

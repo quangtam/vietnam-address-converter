@@ -233,7 +233,7 @@ function showError(message) {
 
 // Show/hide loading state
 function showLoading(show) {
-    const button = document.querySelector('button');
+    const button = document.getElementById('convertBtn');
     const loading = button.querySelector('.loading');
     const icon = button.querySelector('.fas');
     
@@ -307,13 +307,33 @@ function levenshteinDistance(str1, str2) {
     return matrix[str2.length][str1.length];
 }
 
-// Handle Enter key press
+// Handle Enter key press and button clicks
 document.addEventListener('DOMContentLoaded', function() {
+    // Enter key handler
     document.getElementById('addressInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
+            if (typeof convertAddress === 'function') {
+                convertAddress();
+            }
+        }
+    });
+    
+    // Convert button click handler
+    document.getElementById('convertBtn').addEventListener('click', function() {
+        if (typeof convertAddress === 'function') {
             convertAddress();
         }
+    });
+    
+    // Example items click handlers
+    document.querySelectorAll('.example-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            const address = this.getAttribute('data-address');
+            if (typeof setExample === 'function') {
+                setExample(address);
+            }
+        });
     });
     
     // Initialize converter when page loads
@@ -322,7 +342,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Export for debugging
 window.debugConverter = {
-    converter,
+    get converter() { return converter; },
     convertAddress,
-    calculateSimilarity
+    calculateSimilarity,
+    setExample,
+    initializeConverter
 };
+
+// Expose functions to global scope for onclick handlers
+window.convertAddress = convertAddress;
+window.setExample = setExample;
+window.showLoading = showLoading;
+window.showError = showError;
+window.displayResult = displayResult;
