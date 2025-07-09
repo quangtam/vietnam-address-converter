@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [1.0.1] - 2025-07-10
+
+### 🐛 Fixed
+- Sửa lỗi ReferenceError trong demo GitHub Pages  
+- Cải thiện expose functions ra global scope
+- Thêm favicon.ico để tránh 404 error
+- Tối ưu event handling trong demo
+
+### ➕ Added
+- File test functions để debug demo
+- Hướng dẫn chi tiết trong DEMO_JS_FIX.md
+
+### 📝 Documentation
+- Cập nhật README.md với demo link rõ ràng hơn
+- Thêm troubleshooting guide cho GitHub Pages
+
 ## [1.0.0] - 2025-07-09
 
 ### 🚨 BREAKING CHANGES
