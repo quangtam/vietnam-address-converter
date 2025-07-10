@@ -1,4 +1,4 @@
-import { normalizeText, parseAddress, fuzzyContains, calculateSimilarity, findBestMatch, removeAdministrativeTypes } from '../utils';
+import { normalizeText, parseAddress, fuzzyContains, calculateSimilarity, removeAdministrativeTypes } from '../utils';
 
 describe('Utils', () => {
   describe('normalizeText', () => {

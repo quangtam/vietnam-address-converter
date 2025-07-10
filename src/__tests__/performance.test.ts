@@ -74,7 +74,7 @@ async function performanceTest() {
   // Test batch conversion
   console.log('\n⚡ Testing Batch Conversion...');
   startTime = performance.now();
-  const batchResults = optimizedConverter.convertAddresses(testAddresses);
+  void optimizedConverter.convertAddresses(testAddresses);
   endTime = performance.now();
   console.log(`  Batch time: ${Math.round(endTime - startTime)}ms`);
   
@@ -95,7 +95,7 @@ async function performanceTest() {
   optimizedConverter.clearCache();
   
   startTime = performance.now();
-  const afterClearResults = testAddresses.map(addr => optimizedConverter.convertAddress(addr));
+  void testAddresses.map(addr => optimizedConverter.convertAddress(addr));
   endTime = performance.now();
   console.log(`  Conversion after cache clear: ${Math.round(endTime - startTime)}ms`);
   
