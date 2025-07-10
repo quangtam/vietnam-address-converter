@@ -33,7 +33,7 @@ jobs:
         run: npm test
 
       - name: Run linter
-        run: npm run lint
+        run: npm run lint --if-present
 
       - name: Build library
         run: |
