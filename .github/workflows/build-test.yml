@@ -34,10 +34,17 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f package-lock.json ]; then
-            npm ci
+            rm package-lock.json
+            npm cache clean --force
+            npm install
           else
             npm install
           fi
+
+      - name: Reinstall Rollup (fix native module issue)
+        run: |
+          npm uninstall rollup
+          npm install rollup --no-optional
 
       - name: Run linter
         run: npm run lint --if-present
@@ -46,7 +53,12 @@ jobs:
         run: npm test --if-present
 
       - name: Build library
-        run: npm run build
+        run: |
+          npm run build || {
+            echo "Rollup failed, trying alternative build method"
+            npm install --save-dev @rollup/rollup-linux-x64-gnu
+            npm run build
+          }
 
       - name: Test demo
         run: npm run demo --if-present

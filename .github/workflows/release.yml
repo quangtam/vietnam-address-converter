@@ -15,11 +15,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          rm -f package-lock.json
+          npm cache clean --force
+          npm install
+
+      - name: Reinstall Rollup (fix native module issue)
+        run: |
+          npm uninstall rollup
+          npm install rollup --no-optional
 
       - name: Run tests
         run: npm test
@@ -28,7 +36,12 @@ jobs:
         run: npm run lint
 
       - name: Build library
-        run: npm run build
+        run: |
+          npm run build || {
+            echo "Rollup failed, trying alternative build method"
+            npm install --save-dev @rollup/rollup-linux-x64-gnu
+            npm run build
+          }
 
       - name: Publish to NPM
         run: npm publish
