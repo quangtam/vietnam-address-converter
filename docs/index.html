@@ -69,6 +69,19 @@
     </style>
 </head>
 <body class="bg-gradient-purple min-h-screen">
+    <!-- GitHub Link -->
+    <div class="fixed top-4 right-4 z-50">
+        <a 
+            href="https://github.com/quangtam/vietnam-address-converter" 
+            target="_blank"
+            class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg flex items-center gap-2"
+            title="View on GitHub"
+        >
+            <ion-icon name="logo-github" class="text-xl"></ion-icon>
+            <span class="font-medium text-sm">GitHub</span>
+        </a>
+    </div>
+
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <!-- Header -->
         <div class="text-center p-8 glass-effect rounded-3xl mb-8 shadow-2xl">
@@ -94,14 +107,14 @@
                 <div class="text-sm md:text-base opacity-90">Tỉnh/Thành phố</div>
             </div>
             <div class="bg-blue-500 hover-lift rounded-2xl p-6 text-center text-white shadow-xl">
+                <ion-icon name="location-outline" class="text-4xl mb-3 block mx-auto"></ion-icon>
+                <div class="text-3xl md:text-4xl font-bold mb-2" id="stats-wards">11,162</div>
+                <div class="text-sm md:text-base opacity-90">Phường/Xã</div>
+            </div>
+            <div class="bg-purple-500 hover-lift rounded-2xl p-6 text-center text-white shadow-xl">
                 <ion-icon name="analytics" class="text-4xl mb-3 block mx-auto"></ion-icon>
                 <div class="text-3xl md:text-4xl font-bold mb-2" id="stats-mappings">10,039</div>
                 <div class="text-sm md:text-base opacity-90">Quy tắc mapping</div>
-            </div>
-            <div class="bg-orange-500 hover-lift rounded-2xl p-6 text-center text-white shadow-xl">
-                <ion-icon name="checkmark-circle" class="text-4xl mb-3 block mx-auto"></ion-icon>
-                <div class="text-3xl md:text-4xl font-bold mb-2" id="stats-accuracy">99.5%</div>
-                <div class="text-sm md:text-base opacity-90">Độ chính xác</div>
             </div>
         </div>
 
@@ -316,7 +329,7 @@ console.log(result);
                     >
                         Copy
                     </button>
-                    <pre class="text-green-400 font-mono text-sm"><code>git clone https://github.com/username/vietnam-address-converter.git
+                    <pre class="text-green-400 font-mono text-sm"><code>git clone https://github.com/quangtam/vietnam-address-converter.git
 cd vietnam-address-converter
 npm install
 npm run build</code></pre>
@@ -325,7 +338,7 @@ npm run build</code></pre>
                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
                     <p class="text-blue-800">
                         <strong>Tài liệu đầy đủ:</strong> 
-                        <a href="https://github.com/username/vietnam-address-converter" target="_blank" class="text-blue-600 hover:text-blue-800 underline font-semibold">
+                        <a href="https://github.com/quangtam/vietnam-address-converter" target="_blank" class="text-blue-600 hover:text-blue-800 underline font-semibold">
                             GitHub Repository
                         </a>
                     </p>
@@ -336,12 +349,11 @@ npm run build</code></pre>
         <!-- Footer -->
         <div class="text-center p-6 glass-effect rounded-3xl shadow-xl">
             <div class="flex items-center justify-center mb-3">
-                <ion-icon name="heart" class="text-xl text-red-400 mr-2"></ion-icon>
-                <p class="text-white text-lg">
-                    Được phát triển với tình yêu bởi 
-                    <a href="https://github.com/username/vietnam-address-converter" target="_blank" class="text-white hover:text-gray-200 underline font-semibold">
-                        Vietnam Address Converter Team
-                    </a>
+                <p class="text-white text-md">
+                    Made with ❤️ by
+                    <a href="https://github.com/quangtam/vietnam-address-converter" target="_blank" class="text-white hover:text-gray-200 underline font-semibold">
+                        Quang Tam
+                    </a> for Vietnam developers.
                 </p>
             </div>
             <p class="text-white/70 text-sm">
@@ -358,27 +370,26 @@ npm run build</code></pre>
         let isInitialized = false;
 
         // Cập nhật stats từ dữ liệu thực tế
-        function updateStats() {
-            if (isInitialized && converter) {
-                try {
-                    const stats = converter.getStats();
-                    
-                    // Cập nhật số tỉnh/thành phố
-                    const provincesElement = document.getElementById('stats-provinces');
-                    if (provincesElement && stats.totalProvinces) {
-                        provincesElement.textContent = stats.totalProvinces.toLocaleString();
-                    }
-                    
-                    // Cập nhật số quy tắc mapping
-                    const mappingsElement = document.getElementById('stats-mappings');
-                    if (mappingsElement && stats.totalMappings) {
-                        mappingsElement.textContent = stats.totalMappings.toLocaleString();
-                    }
-                    
-                    console.log('📊 Stats updated:', stats);
-                } catch (error) {
-                    console.warn('⚠️ Could not update stats:', error);
-                }
+        function updateStats(stats) {
+            // Cập nhật số tỉnh/thành phố
+            const provincesElement = document.getElementById('stats-provinces');
+            if (provincesElement && stats && (typeof stats.provinces === 'number' || typeof stats.provinces === 'string')) {
+                const value = typeof stats.provinces === 'number' ? stats.provinces.toLocaleString() : stats.provinces;
+                provincesElement.textContent = value;
+            }
+            
+            // Cập nhật số phường/xã
+            const wardsElement = document.getElementById('stats-wards');
+            if (wardsElement && stats && (typeof stats.wards === 'number' || typeof stats.wards === 'string')) {
+                const value = typeof stats.wards === 'number' ? stats.wards.toLocaleString() : stats.wards;
+                wardsElement.textContent = value;
+            }
+            
+            // Cập nhật số quy tắc mapping
+            const mappingsElement = document.getElementById('stats-mappings');
+            if (mappingsElement && stats && (typeof stats.mappings === 'number' || typeof stats.mappings === 'string')) {
+                const value = typeof stats.mappings === 'number' ? stats.mappings.toLocaleString() : stats.mappings;
+                mappingsElement.textContent = value;
             }
         }
 
@@ -399,15 +410,13 @@ npm run build</code></pre>
                 isInitialized = true;
                 resultDiv.style.display = 'none';
                 
-                // Update stats with real data
-                updateStats();
+                // Cập nhật stats từ dữ liệu thực tế
+                updateStats(converter.dataLoader.getStats());
                 
                 // Enable convert button
                 document.getElementById('convertBtn').disabled = false;
-                console.log('✅ Converter đã sẵn sàng!');
                 
             } catch (error) {
-                console.error('❌ Lỗi khởi tạo:', error);
                 const resultDiv = document.getElementById('result');
                 resultDiv.style.display = 'block';
                 resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
@@ -420,6 +429,19 @@ npm run build</code></pre>
                     <p class="mt-2"><strong>Giải pháp:</strong> Hãy đảm bảo bạn đang chạy từ web server và có kết nối internet.</p>
                 `;
             }
+        }
+
+        // Việt hóa loại chuyển đổi
+        function translateMappingType(mappingType) {
+            const translations = {
+                'merged': 'Sáp nhập phường/xã',
+                'renamed': 'Đổi tên phường/xã',
+                'unchanged': 'Giữ nguyên',
+                'not_found': 'Không tìm thấy',
+                'exact': 'Trùng khớp chính xác',
+            };
+            
+            return translations[mappingType] || mappingType || 'Không xác định';
         }
 
         // Chuyển đổi địa chỉ
@@ -453,9 +475,9 @@ npm run build</code></pre>
                             <h3 class="font-bold text-lg">Chuyển đổi thành công!</h3>
                         </div>
                         <div class="text-left space-y-4">
-                            <div>
-                                <p class="font-semibold mb-2">Địa chỉ gốc:</p>
-                                <ul class="list-disc list-inside space-y-1 ml-4">
+                            <div class="bg-gray-100 p-4 rounded-lg border border-gray-400">
+                                <p class="font-semibold mb-2 text-gray-700">Địa chỉ gốc (cũ):</p>
+                                <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600">
                                     <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
                                     <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
                                     <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
@@ -463,9 +485,9 @@ npm run build</code></pre>
                                 </ul>
                             </div>
                             
-                            <div>
-                                <p class="font-semibold mb-2">Địa chỉ mới:</p>
-                                <ul class="list-disc list-inside space-y-1 ml-4">
+                            <div class="bg-green-100 p-4 rounded-lg border border-green-400">
+                                <p class="font-semibold mb-2 text-green-700">Địa chỉ mới (sau chuyển đổi):</p>
+                                <ul class="list-disc list-inside space-y-1 ml-4 text-green-600">
                                     <li>Phường/Xã: ${result.convertedAddress.ward}</li>
                                     <li>Tỉnh/TP: ${result.convertedAddress.province}</li>
                                     <li>Đường/Số nhà: ${result.convertedAddress.street || 'Không có'}</li>
@@ -473,7 +495,7 @@ npm run build</code></pre>
                             </div>
                             
                             <div class="bg-green-100 p-3 rounded-lg">
-                                <p><strong>Loại chuyển đổi:</strong> ${result.mappingInfo?.mappingType || 'Không xác định'}</p>
+                                <p><strong>Loại chuyển đổi:</strong> ${translateMappingType(result.mappingInfo?.mappingType)}</p>
                                 <p><strong>Ghi chú:</strong> ${result.message}</p>
                             </div>
                         </div>
@@ -486,10 +508,12 @@ npm run build</code></pre>
                             <h3 class="font-bold text-lg">Không thể chuyển đổi</h3>
                         </div>
                         <div class="text-left space-y-4">
-                            <p><strong>Lỗi:</strong> ${result.message}</p>
-                            <div>
-                                <p class="font-semibold mb-2">Địa chỉ gốc:</p>
-                                <ul class="list-disc list-inside space-y-1 ml-4">
+                            <div class="bg-red-100 p-3 rounded-lg border border-red-300">
+                                <p><strong>Lỗi:</strong> ${result.message}</p>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg border border-gray-300">
+                                <p class="font-semibold mb-2 text-gray-700">Địa chỉ cũ:</p>
+                                <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600">
                                     <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
                                     <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
                                     <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
@@ -500,7 +524,6 @@ npm run build</code></pre>
                     `;
                 }
             } catch (error) {
-                console.error('Lỗi chuyển đổi:', error);
                 resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
                 resultDiv.innerHTML = `
                     <div class="flex items-center justify-center mb-2">
@@ -560,7 +583,15 @@ npm run build</code></pre>
         document.getElementById('convertBtn').disabled = true;
 
         // Khởi tạo khi trang load
-        window.addEventListener('load', initializeConverter);
+        window.addEventListener('load', function() {
+            // Hiển thị loading state cho stats
+            document.getElementById('stats-provinces').textContent = '...';
+            document.getElementById('stats-wards').textContent = '...';
+            document.getElementById('stats-mappings').textContent = '...';
+            
+            // Khởi tạo converter
+            initializeConverter();
+        });
     </script>
 </body>
 </html>
