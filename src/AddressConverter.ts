@@ -1,4 +1,4 @@
-import { DataLoader } from './DataLoader';
+import { OptimizedDataLoader } from './OptimizedDataLoader';
 import { FullAddress, ValidAddress, NewAddress, ConversionResult, WardMapping, Province, Ward } from './types';
 import { 
   normalizeText, 
@@ -11,13 +11,26 @@ import {
 
 /**
  * Class chính để chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới
+ * Đã được tối ưu hóa với cache và batch processing
  */
 export class VietnamAddressConverter {
-  private dataLoader: DataLoader;
+  private dataLoader: OptimizedDataLoader;
   private isInitialized = false;
+  
+  // Caches để tránh tính toán lại
+  private conversionCache = new Map<string, ConversionResult>();
+  private provinceCache = new Map<string, Province | undefined>();
+  private wardCache = new Map<string, Ward | undefined>();
+  
+  // Performance tracking
+  private stats = {
+    totalConversions: 0,
+    cacheHits: 0,
+    avgConversionTime: 0
+  };
 
   constructor() {
-    this.dataLoader = new DataLoader();
+    this.dataLoader = new OptimizedDataLoader();
   }
 
   /**
@@ -25,225 +38,277 @@ export class VietnamAddressConverter {
    */
   async initialize(dataFilePath?: string): Promise<void> {
     try {
+      const startTime = performance.now();
       await this.dataLoader.loadFromFile(dataFilePath);
+      const endTime = performance.now();
+      
       this.isInitialized = true;
+      console.log(`🚀 Converter initialized in ${Math.round(endTime - startTime)}ms`);
+      console.log('📊 Data stats:', this.dataLoader.getStats());
     } catch (error) {
       throw new Error(`Không thể khởi tạo converter: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
   /**
-   * Chuyển đổi địa chỉ từ cũ sang mới
+   * Chuyển đổi địa chỉ với cache và optimization
    */
   convertAddress(address: string | FullAddress): ConversionResult {
     if (!this.isInitialized) {
       throw new Error('Converter chưa được khởi tạo. Hãy gọi initialize() trước.');
     }
 
+    const startTime = performance.now();
+    
+    // Tạo cache key từ input
+    const cacheKey = typeof address === 'string' ? address : JSON.stringify(address);
+    
+    // Kiểm tra cache trước
+    if (this.conversionCache.has(cacheKey)) {
+      this.stats.cacheHits++;
+      return this.conversionCache.get(cacheKey)!;
+    }
+
     const fullAddress = typeof address === 'string' ? parseAddress(address) : address;
     
     if (!fullAddress.province) {
-      return {
+      const result: ConversionResult = {
         success: false,
         originalAddress: fullAddress,
         message: 'Địa chỉ phải có ít nhất tên tỉnh/thành phố'
       };
+      
+      this.conversionCache.set(cacheKey, result);
+      return result;
     }
 
-    // Cast thành ValidAddress sau khi đã validate
     const validAddress: ValidAddress = fullAddress as ValidAddress;
-
-    // Tìm mapping dựa trên thông tin địa chỉ
+    
+    // Tìm mapping với optimized search
     const mappings = this.dataLoader.findMappingByOldAddress(
       validAddress.ward,
       validAddress.district,
       validAddress.province
     );
 
+    let result: ConversionResult;
+
     if (mappings.length === 0) {
-      // Không tìm thấy mapping, kiểm tra xem địa chỉ có tồn tại trong dữ liệu mới không
-      const newProvinceMatch = this.findNewProvince(validAddress.province);
+      // Sử dụng cached province lookup
+      const newProvinceMatch = this.findNewProvinceCached(validAddress.province);
       if (newProvinceMatch) {
-        const newWardMatch = this.findNewWard(validAddress.ward, newProvinceMatch.province_code);
+        const newWardMatch = this.findNewWardCached(validAddress.ward || '', newProvinceMatch.province_code);
         
-        return {
-          success: true,
+        if (newWardMatch) {
+          result = {
+            success: true,
+            originalAddress: fullAddress,
+            convertedAddress: {
+              ward: newWardMatch.name,
+              province: newProvinceMatch.name,
+              street: validAddress.street
+            },
+            mappingInfo: {
+              mappingType: 'unchanged'
+            },
+            message: 'Địa chỉ không thay đổi (exact match)'
+          };
+        } else {
+          result = {
+            success: false,
+            originalAddress: fullAddress,
+            message: `Không tìm thấy mapping cho phường/xã: ${validAddress.ward} trong ${newProvinceMatch.name}`
+          };
+        }
+      } else {
+        result = {
+          success: false,
           originalAddress: fullAddress,
-          convertedAddress: {
-            ward: newWardMatch?.name || validAddress.ward,
-            // Loại bỏ district theo cấu trúc hành chính mới
-            province: newProvinceMatch.name,
-            street: validAddress.street
-          },
-          mappingInfo: {
-            mappingType: 'unchanged'
-          },
-          message: 'Địa chỉ không thay đổi hoặc đã được cập nhật'
+          message: `Không tìm thấy tỉnh/thành phố: ${validAddress.province}`
         };
       }
-
-      return {
-        success: false,
-        originalAddress: fullAddress,
-        message: 'Không tìm thấy thông tin mapping cho địa chỉ này'
-      };
+    } else {
+      // Tìm mapping phù hợp nhất với fast matching
+      const bestMapping = this.findBestMappingFast(validAddress, mappings);
+      
+      if (!bestMapping) {
+        result = {
+          success: false,
+          originalAddress: fullAddress,
+          message: 'Không tìm thấy mapping phù hợp'
+        };
+      } else {
+        // Xây dựng địa chỉ mới từ mapping
+        const convertedAddress = this.buildConvertedAddress(bestMapping, validAddress.street);
+        
+        result = {
+          success: true,
+          originalAddress: fullAddress,
+          convertedAddress,
+          mappingInfo: {
+            mappingType: 'merged' // simplified mapping type
+          },
+          message: 'Chuyển đổi thành công'
+        };
+      }
     }
 
-    // Tìm mapping phù hợp nhất
-    const bestMapping = this.findBestMapping(validAddress, mappings);
+    // Cache result
+    this.conversionCache.set(cacheKey, result);
     
-    if (!bestMapping) {
-      return {
-        success: false,
-        originalAddress: fullAddress,
-        message: 'Không tìm thấy mapping phù hợp'
-      };
-    }
+    // Update performance stats
+    const endTime = performance.now();
+    this.stats.totalConversions++;
+    this.stats.avgConversionTime = (this.stats.avgConversionTime * (this.stats.totalConversions - 1) + (endTime - startTime)) / this.stats.totalConversions;
 
-    // Tạo địa chỉ mới từ mapping
-    const convertedAddress = this.createConvertedAddress(validAddress, bestMapping);
-    const mappingType = this.determineMappingType(bestMapping, mappings);
-
-    return {
-      success: true,
-      originalAddress: fullAddress,
-      convertedAddress,
-      mappingInfo: {
-        oldWardCode: bestMapping.old_ward_code,
-        newWardCode: bestMapping.new_ward_code,
-        mappingType
-      },
-      message: this.getMappingMessage(mappingType)
-    };
+    return result;
   }
 
   /**
-   * Tìm mapping phù hợp nhất
+   * Batch conversion với optimizations
    */
-  private findBestMapping(address: ValidAddress, mappings: WardMapping[]): WardMapping | null {
+  convertAddresses(addresses: (string | FullAddress)[]): ConversionResult[] {
+    console.log(`🔄 Converting ${addresses.length} addresses in batch...`);
+    const startTime = performance.now();
+    
+    const results = addresses.map(address => this.convertAddress(address));
+    
+    const endTime = performance.now();
+    console.log(`✅ Batch conversion completed in ${Math.round(endTime - startTime)}ms`);
+    console.log(`📈 Cache hit rate: ${Math.round((this.stats.cacheHits / this.stats.totalConversions) * 100)}%`);
+    
+    return results;
+  }
+
+  /**
+   * Cached province lookup
+   */
+  private findNewProvinceCached(provinceName: string): Province | undefined {
+    if (this.provinceCache.has(provinceName)) {
+      return this.provinceCache.get(provinceName);
+    }
+    
+    const province = this.dataLoader.findProvinceByName(provinceName);
+    this.provinceCache.set(provinceName, province);
+    return province;
+  }
+
+  /**
+   * Cached ward lookup
+   */
+  private findNewWardCached(wardName: string, provinceCode?: string): Ward | undefined {
+    const cacheKey = `${wardName}_${provinceCode || ''}`;
+    
+    if (this.wardCache.has(cacheKey)) {
+      return this.wardCache.get(cacheKey);
+    }
+    
+    const ward = this.dataLoader.findWardByName(wardName, provinceCode);
+    this.wardCache.set(cacheKey, ward);
+    return ward;
+  }
+
+  /**
+   * Fast mapping selection với simplified scoring
+   */
+  private findBestMappingFast(address: ValidAddress, mappings: WardMapping[]): WardMapping | null {
     if (mappings.length === 1) {
       return mappings[0];
     }
-
-    // Tính điểm cho mỗi mapping
+    
     let bestMapping: WardMapping | null = null;
     let bestScore = 0;
-
+    
+    const normalizedProvince = normalizeText(address.province);
+    const normalizedDistrict = normalizeText(address.district || '');
+    const normalizedWard = normalizeText(address.ward || '');
+    
     for (const mapping of mappings) {
       let score = 0;
-
-      // Điểm province (quan trọng nhất)
-      if (address.province) {
-        const provinceSimilarity = Math.max(
-          calculateSimilarity(address.province, mapping.old_province_name),
-          calculateSimilarity(address.province, mapping.new_province_name)
-        );
-        score += provinceSimilarity * 3;
+      
+      // Fast exact match checks
+      if (mapping.old_province_name && normalizeText(mapping.old_province_name) === normalizedProvince) {
+        score += 10;
       }
-
-      // Điểm district
-      if (address.district) {
-        const districtSimilarity = calculateSimilarity(address.district, mapping.old_district_name);
-        score += districtSimilarity * 2;
+      
+      if (mapping.old_district_name && normalizeText(mapping.old_district_name) === normalizedDistrict) {
+        score += 10;
       }
-
-      // Điểm ward
-      if (address.ward) {
-        const wardSimilarity = calculateSimilarity(address.ward, mapping.old_ward_name);
-        score += wardSimilarity * 1;
+      
+      if (mapping.old_ward_name && normalizeText(mapping.old_ward_name) === normalizedWard) {
+        score += 20;
       }
-
+      
+      // Quick similarity check only if no exact matches
+      if (score === 0) {
+        if (mapping.old_province_name) {
+          score += calculateSimilarity(normalizedProvince, normalizeText(mapping.old_province_name)) * 5;
+        }
+        if (mapping.old_ward_name) {
+          score += calculateSimilarity(normalizedWard, normalizeText(mapping.old_ward_name)) * 10;
+        }
+      }
+      
       if (score > bestScore) {
         bestScore = score;
         bestMapping = mapping;
       }
+      
+      // Early exit for perfect matches
+      if (score >= 40) break;
     }
-
-    return bestScore > 1.5 ? bestMapping : null; // Threshold để đảm bảo chất lượng mapping
+    
+    return bestScore > 15 ? bestMapping : null;
   }
 
   /**
-   * Tạo địa chỉ mới từ mapping
+   * Build converted address từ mapping
    */
-  private createConvertedAddress(originalAddress: ValidAddress, mapping: WardMapping): NewAddress {
+  private buildConvertedAddress(mapping: WardMapping, street?: string): NewAddress {
     return {
-      ward: mapping.new_ward_name,
-      // Loại bỏ district theo cấu trúc hành chính mới
-      province: mapping.new_province_name,
-      street: originalAddress.street
+      ward: mapping.new_ward_name || 'Unknown Ward',
+      province: mapping.new_province_name || 'Unknown Province',
+      street: street
     };
   }
 
   /**
-   * Xác định loại mapping
+   * Check if address has changes
    */
-  private determineMappingType(mapping: WardMapping, allMappings: WardMapping[]): 'exact' | 'merged' | 'renamed' | 'unchanged' | 'not_found' {
-    // Kiểm tra merge: nhiều ward cũ -> 1 ward mới
-    const sameNewWard = allMappings.filter(m => m.new_ward_code === mapping.new_ward_code);
-    if (sameNewWard.length > 1) {
-      return 'merged';
-    }
-
-    // Kiểm tra rename: 1 ward cũ -> 1 ward mới với tên khác
-    if (mapping.old_ward_code === mapping.new_ward_code && mapping.old_ward_name !== mapping.new_ward_name) {
-      return 'renamed';
-    }
-
-    // Kiểm tra exact: ward không thay đổi
-    if (mapping.old_ward_code === mapping.new_ward_code && mapping.old_ward_name === mapping.new_ward_name) {
-      return 'unchanged';
-    }
-
-    return 'exact';
-  }
-
-  /**
-   * Tạo message cho kết quả mapping
-   */
-  private getMappingMessage(mappingType: 'exact' | 'merged' | 'renamed' | 'unchanged' | 'not_found'): string {
-    switch (mappingType) {
-      case 'exact':
-        return 'Địa chỉ đã được chuyển đổi chính xác';
-      case 'merged':
-        return 'Phường/xã cũ đã được gộp vào phường/xã mới';
-      case 'renamed':
-        return 'Phường/xã đã được đổi tên';
-      case 'unchanged':
-        return 'Địa chỉ không thay đổi';
-      default:
-        return 'Không xác định được loại chuyển đổi';
-    }
-  }
-
-  /**
-   * Tìm tỉnh trong dữ liệu mới
-   */
-  private findNewProvince(provinceName: string): Province | null {
-    const provinces = this.dataLoader.getProvinces();
-    const match = findBestMatch(
-      provinces,
-      provinceName,
-      (province: Province) => province.name + ' ' + province.short_name,
-      0.7
-    );
-    return match?.item || null;
-  }
-
-  /**
-   * Tìm phường/xã trong dữ liệu mới
-   */
-  private findNewWard(wardName: string | undefined, provinceCode: string): Ward | null {
-    if (!wardName) return null;
+  private hasAddressChanges(oldAddress: ValidAddress, newAddress: NewAddress): boolean {
+    const oldNormalized = `${normalizeText(oldAddress.ward || '')}_${normalizeText(oldAddress.province)}`;
+    const newNormalized = `${normalizeText(newAddress.ward || '')}_${normalizeText(newAddress.province || '')}`;
     
-    const wards = this.dataLoader.getWards().filter((ward: Ward) => ward.province_code === provinceCode);
-    const match = findBestMatch(
-      wards,
-      wardName,
-      (ward: Ward) => ward.name,
-      0.7
-    );
-    return match?.item || null;
+    return oldNormalized !== newNormalized;
   }
+
+  /**
+   * Clear caches để giải phóng memory
+   */
+  clearCache(): void {
+    this.conversionCache.clear();
+    this.provinceCache.clear();
+    this.wardCache.clear();
+    console.log('🧹 Caches cleared');
+  }
+
+  /**
+   * Get performance statistics
+   */
+  getPerformanceStats() {
+    return {
+      ...this.stats,
+      cacheSize: this.conversionCache.size,
+      provinceCacheSize: this.provinceCache.size,
+      wardCacheSize: this.wardCache.size,
+      dataStats: this.dataLoader.getStats()
+    };
+  }
+
+  // Backward compatibility methods
+  getProvinces(): Province[] { return this.dataLoader.getProvinces(); }
+  getWards(): Ward[] { return this.dataLoader.getWards(); }
+  getWardMappings(): WardMapping[] { return this.dataLoader.getWardMappings(); }
 
   /**
    * Lấy thống kê dữ liệu
@@ -252,17 +317,7 @@ export class VietnamAddressConverter {
     if (!this.isInitialized) {
       throw new Error('Converter chưa được khởi tạo');
     }
-    return this.dataLoader.getDataStats();
-  }
-
-  /**
-   * Lấy danh sách tỉnh/thành phố
-   */
-  getProvinces() {
-    if (!this.isInitialized) {
-      throw new Error('Converter chưa được khởi tạo');
-    }
-    return this.dataLoader.getProvinces();
+    return this.dataLoader.getStats();
   }
 
   /**

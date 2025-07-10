@@ -1,5 +1,5 @@
 [
-{"type":"header","version":"5.2.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.0","comment":"JSON database for JavaScript/ TypeScript library to convert Vietnamese administrative addresses according to Resolution 202/2025/QH15"},
 {"type":"database","name":"address"},
 {"type":"table","name":"provinces","database":"address","data":
 [

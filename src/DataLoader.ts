@@ -1,7 +1,6 @@
 import { Province, Ward, WardMapping, DatabaseExport } from './types';
 import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 
 /**
  * Class để load và parse dữ liệu từ file address.json
@@ -25,9 +24,7 @@ export class DataLoader {
         data = JSON.parse(rawContent);
       } else {
         // Load từ file mặc định trong thư viện
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = dirname(__filename);
-        const dataPath = join(__dirname, 'data', 'address.json');
+        const dataPath = join(process.cwd(), 'src', 'data', 'address.json');
         const rawContent = readFileSync(dataPath, 'utf8');
         data = JSON.parse(rawContent);
       }

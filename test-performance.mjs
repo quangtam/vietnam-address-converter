@@ -1,4 +1,4 @@
-import { OptimizedVietnamAddressConverter } from './dist/index.js';
+import { VietnamAddressConverter } from './dist/index.esm.js';
 
 async function quickPerformanceTest() {
   console.log('🚀 Quick Performance Test\n');
@@ -11,7 +11,7 @@ async function quickPerformanceTest() {
     '123 Nguyễn Văn Cừ, Phường 5, Quận Gò Vấp, Thành phố Hồ Chí Minh'
   ];
   
-  const converter = new OptimizedVietnamAddressConverter();
+  const converter = new VietnamAddressConverter();
   
   console.log('⏳ Initializing converter...');
   const initStart = performance.now();
