@@ -7,6 +7,7 @@
   "module": "dist/index.esm.js",
   "browser": "dist/index.browser.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://quangtam.github.io/vietnam-address-converter/",
   "repository": {
     "type": "git",
     "url": "https://github.com/quangtam/vietnam-address-converter.git"
