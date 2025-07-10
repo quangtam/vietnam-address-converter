@@ -3,6 +3,8 @@
 Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
 
 [![npm version](https://img.shields.io/npm/v/vietnam-address-converter.svg)](https://www.npmjs.com/package/vietnam-address-converter)
+[![Build Status](https://github.com/quangtam/vietnam-address-converter/workflows/Build%20and%20Test/badge.svg)](https://github.com/quangtam/vietnam-address-converter/actions)
+[![Deploy Status](https://github.com/quangtam/vietnam-address-converter/workflows/Deploy%20to%20GitHub%20Pages/badge.svg)](https://github.com/quangtam/vietnam-address-converter/actions)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue.svg)](https://www.typescriptlang.org/)
 
