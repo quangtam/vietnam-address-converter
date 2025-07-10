@@ -3,11 +3,10 @@
 Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
 
 [![npm version](https://img.shields.io/npm/v/vietnam-address-converter.svg)](https://www.npmjs.com/package/vietnam-address-converter)
-[![GitHub Pages](https://img.shields.io/badge/demo-online-brightgreen)](https://quangtam.github.io/vietnam-address-converter)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue.svg)](https://www.typescriptlang.org/)
 
-🌐 **[Demo Online](https://quangtam.github.io/vietnam-address-converter)** | 📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)**
+📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)**
 
 ## ✨ Tính năng chính
 
@@ -31,27 +30,13 @@ Thư viện JavaScript/TypeScript để tự động chuyển đổi địa ch�
 
 👉 **[Xem chi tiết Performance Guide](./PERFORMANCE.md)**
 
-## 🎯 Demo Trực Tuyến
-
-🌐 **[👉 Thử ngay Demo Online](https://quangtam.github.io/vietnam-address-converter)** 
-
-Trải nghiệm thư viện ngay trên trình duyệt với giao diện thân thiện:
-- ✨ Chuyển đổi địa chỉ real-time
-- 📊 Xem thống kê dữ liệu (34 tỉnh/thành, 3,321 phường/xã, 10,039 quy tắc)
-- 🎲 Các ví dụ mẫu để test
-- 📱 Giao diện responsive, hoạt động tốt trên mobile
-
-> **💡 Tip:** Demo sử dụng dữ liệu mẫu để minh họa. Thư viện thực tế có đầy đủ dữ liệu mapping chính thức.
-
-## 📦 Cài đặt
+##  Cài đặt
 
 ```bash
 npm install vietnam-address-converter
 ```
 
 ## 🚀 Sử dụng cơ bản
-
-> 🎯 **Muốn thử ngay?** [👉 Demo Online](https://quangtam.github.io/vietnam-address-converter) - Không cần cài đặt gì!
 
 ### 1. Khởi tạo và chuyển đổi địa chỉ
 
@@ -274,10 +259,8 @@ node examples/demo.ts
 - 📚 **[Quick Start Guide](./QUICKSTART.md)** - Hướng dẫn nhanh bắt đầu
 - 📖 **[Full Documentation](./README.md)** - Tài liệu đầy đủ
 - 📝 **[Changelog](./CHANGELOG.md)** - Lịch sử thay đổi
-- ⚙️ **[GitHub Pages Setup](./GITHUB_PAGES_SETUP.md)** - Hướng dẫn setup demo
 
 ### 🌐 Online Resources  
-- 🎯 **[Demo Online](https://quangtam.github.io/vietnam-address-converter)** - Trải nghiệm thư viện trực tuyến
 - 📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** - Tải về và cài đặt
 - 💻 **[GitHub Repository](https://github.com/quangtam/vietnam-address-converter)** - Source code và issues
 - 🏛️ **[Nghị quyết 202/2025/QH15](https://chinhphu.vn)** - Văn bản pháp lý gốc
