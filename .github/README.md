@@ -87,18 +87,31 @@ Thêm vào README.md:
 
 ### Common Issues
 
-1. **GitHub Pages không deploy**
+1. **Rollup Native Module Error (Linux)**
+   ```
+   Error: Cannot find module @rollup/rollup-linux-x64-gnu
+   ```
+   **Solution**: Workflows đã được config để tự động fix:
+   - Xóa package-lock.json và clear npm cache
+   - Reinstall rollup với --no-optional flag
+   - Fallback install native module nếu cần
+
+2. **GitHub Pages không deploy**
    - Kiểm tra thư mục `docs/` có tồn tại
    - Kiểm tra workflow permissions
 
-2. **NPM publish thất bại**
+3. **NPM publish thất bại**
    - Kiểm tra NPM_TOKEN secret
    - Kiểm tra version đã tăng chưa
    - Kiểm tra package name availability
 
-3. **Tests fail trên CI**
+4. **Tests fail trên CI**
    - Test local trước: `npm test`
    - Kiểm tra Node.js version compatibility
+
+5. **Build timeout hoặc out of memory**
+   - Workflows sử dụng Node.js 18 cho stability
+   - Cache được disabled để tránh conflicts
 
 ### Manual Triggers
 
