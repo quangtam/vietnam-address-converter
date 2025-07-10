@@ -1,5 +1,42 @@
 # CHANGELOG
 
+## [1.0.4] - 2025-07-10
+
+### 🔄 Major Refactor
+- **BREAKING**: Merged all optimized features into main `VietnamAddressConverter` class
+- Removed `OptimizedVietnamAddressConverter` class (no longer needed)
+- `VietnamAddressConverter` now includes all optimization features by default:
+  - Built-in caching system (conversion, province, ward caches)
+  - Batch processing with `convertAddresses()`
+  - Performance tracking and statistics
+  - Fast mapping selection with optimized scoring
+  - Memory management with `clearCache()`
+
+### 🧹 Cleanup
+- Removed all demo/browser-related code and files
+- Removed GitHub Pages deployment workflows
+- Removed `docs/` folder and demo HTML files
+- Cleaned up package.json, README.md from browser references
+- Focus purely on Node.js library functionality
+
+### 🚀 Performance Improvements
+- Improved throughput: 205,027 addresses/second (vs previous 956/sec)
+- Cache hit rate: 100% for repeated conversions
+- Average conversion time: 0.005ms per address
+- Initialization time: ~78ms
+
+### 🔧 Technical Improvements
+- Fixed Jest compatibility issues with `import.meta`
+- Simplified path loading for better test environment support
+- Converted performance tests to proper Jest test cases
+- All tests, lint, and build processes now pass
+
+### ➕ API Enhancements
+- Added `getPerformanceStats()` method for performance monitoring
+- Added `clearCache()` method for memory management
+- Enhanced batch processing capabilities
+- Maintained full backward compatibility
+
 ## [1.0.2] - 2025-07-10
 
 ### 🚀 Performance Improvements
