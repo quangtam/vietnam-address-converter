@@ -1,0 +1,31 @@
+# GitHub Pages Configuration
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Exclude files from processing
+exclude:
+  - node_modules/
+  - dist/
+  - src/
+  - examples/
+  - "*.md"
+  - package.json
+  - rollup.config.js
+  - tsconfig.json
+  - jest.config.js
+  - .eslintrc.json
+  - .gitignore
+  - LICENSE
+
+# Include docs folder
+include:
+  - docs/
+
+# Set source directory to docs
+source: docs
+
+# Enable GitHub Pages
+github: [metadata]
