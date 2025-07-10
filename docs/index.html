@@ -3,146 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vietnam Address Converter - Browser Demo</title>
+    <title>Vietnam Address Converter - Chuyển đổi địa chỉ hành chính Việt Nam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'purple-gradient-from': '#667eea',
+                        'purple-gradient-to': '#764ba2',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
+            font-family: 'Inter', sans-serif;
         }
-        .container {
+        
+        .bg-gradient-purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gradient-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+        }
+
+        .install-tab.active {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-        .input-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #34495e;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        button {
-            background: #3498db;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-        button:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            background: #ecf0f1;
-        }
-        .success {
-            background: #d5f4e6;
-            border-left: 4px solid #27ae60;
-        }
-        .error {
-            background: #fdf2f2;
-            border-left: 4px solid #e74c3c;
-        }
-        .loading {
-            text-align: center;
-            color: #7f8c8d;
-        }
-        .example {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            border-left: 4px solid #17a2b8;
-        }
-        .example h3 {
-            margin-top: 0;
-            color: #17a2b8;
-        }
-        .example ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        .example li {
-            margin: 5px 0;
-            cursor: pointer;
-            color: #495057;
-        }
-        .example li:hover {
-            color: #007bff;
-            text-decoration: underline;
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>🇻🇳 Vietnam Address Converter</h1>
-        <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
-            Chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết 202/2025/QH15
-        </p>
+<body class="bg-gradient-purple min-h-screen">
+    <!-- GitHub Link -->
+    <div class="fixed top-4 right-4 z-50">
+        <a 
+            href="https://github.com/quangtam/vietnam-address-converter" 
+            target="_blank"
+            class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg flex items-center gap-2"
+            title="View on GitHub"
+        >
+            <ion-icon name="logo-github" class="text-xl"></ion-icon>
+            <span class="font-medium text-sm">GitHub</span>
+        </a>
+    </div>
 
-        <div class="input-group">
-            <label for="addressInput">Nhập địa chỉ cần chuyển đổi:</label>
-            <input 
-                type="text" 
-                id="addressInput" 
-                placeholder="Ví dụ: Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh"
-                value=""
-            >
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center p-8 glass-effect rounded-3xl mb-8 shadow-2xl">
+            <div class="flex items-center justify-center mb-4">
+                <ion-icon name="location" class="text-6xl text-white mr-3"></ion-icon>
+                <h1 class="text-4xl md:text-5xl font-bold text-white">
+                    Vietnam Address Converter
+                </h1>
+            </div>
+            <p class="text-white/90 text-lg md:text-xl mb-2">
+                Chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới
+            </p>
+            <p class="text-white/70 text-sm md:text-base">
+                Theo Nghị quyết 202/2025/QH15 của Quốc hội
+            </p>
         </div>
 
-        <button id="convertBtn" onclick="convertAddress()">🔄 Chuyển đổi địa chỉ</button>
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-green-500 hover-lift rounded-2xl p-6 text-center text-white shadow-xl">
+                <ion-icon name="business" class="text-4xl mb-3 block mx-auto"></ion-icon>
+                <div class="text-3xl md:text-4xl font-bold mb-2" id="stats-provinces">63</div>
+                <div class="text-sm md:text-base opacity-90">Tỉnh/Thành phố</div>
+            </div>
+            <div class="bg-blue-500 hover-lift rounded-2xl p-6 text-center text-white shadow-xl">
+                <ion-icon name="location-outline" class="text-4xl mb-3 block mx-auto"></ion-icon>
+                <div class="text-3xl md:text-4xl font-bold mb-2" id="stats-wards">11,162</div>
+                <div class="text-sm md:text-base opacity-90">Phường/Xã</div>
+            </div>
+            <div class="bg-purple-500 hover-lift rounded-2xl p-6 text-center text-white shadow-xl">
+                <ion-icon name="analytics" class="text-4xl mb-3 block mx-auto"></ion-icon>
+                <div class="text-3xl md:text-4xl font-bold mb-2" id="stats-mappings">10,039</div>
+                <div class="text-sm md:text-base opacity-90">Quy tắc mapping</div>
+            </div>
+        </div>
 
-        <div id="result" class="result" style="display: none;"></div>
+        <!-- Demo Section -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 mb-8 shadow-xl">
+            <div class="flex items-center justify-center mb-6">
+                <ion-icon name="swap-horizontal" class="text-3xl text-gray-800 mr-3"></ion-icon>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                    Chuyển Đổi Địa Chỉ Cũ -> Mới
+                </h2>
+            </div>
+            
+            <div class="mb-6">
+                <label for="addressInput" class="block text-sm font-semibold text-gray-700 mb-3">
+                    Nhập địa chỉ cần chuyển đổi:
+                </label>
+                <input 
+                    type="text" 
+                    id="addressInput" 
+                    placeholder="Ví dụ: Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh"
+                    class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl text-base focus:border-purple-500 focus:outline-none transition-colors"
+                >
+            </div>
+            
+            <button 
+                id="convertBtn" 
+                onclick="convertAddress()"
+                class="w-full gradient-btn text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+            >
+                <ion-icon name="swap-horizontal" class="text-xl mr-2"></ion-icon>
+                Chuyển đổi địa chỉ
+            </button>
+            
+            <div id="result" class="mt-6 p-4 rounded-xl hidden"></div>
+        </div>
 
-        <div class="example">
-            <h3>💡 Ví dụ địa chỉ (click để thử):</h3>
-            <ul>
-                <li onclick="setExample('Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh')">
-                    Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh
-                </li>
-                <li onclick="setExample('Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ')">
-                    Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ
-                </li>
-                <li onclick="setExample('Phường An Lạc, Quận Bình Tân, Thành phố Hồ Chí Minh')">
-                    Phường An Lạc, Quận Bình Tân, Thành phố Hồ Chí Minh
-                </li>
-                <li onclick="setExample('Số 20 Ngõ 192 Lê Trọng Tấn, Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội')">
-                    Số 20 Ngõ 192 Lê Trọng Tấn, Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội
-                </li>
-            </ul>
+        <!-- Examples Section -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 mb-8 shadow-xl">
+            <div class="flex items-center justify-center mb-8">
+                <ion-icon name="bulb" class="text-3xl text-gray-800 mr-3"></ion-icon>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                    Ví Dụ Địa Chỉ
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- TP.HCM Examples -->
+                <div class="bg-gray-50 rounded-2xl p-6 border-l-4 border-cyan-500">
+                    <h4 class="text-lg font-semibold text-cyan-600 mb-4">TP. Hồ Chí Minh</h4>
+                    <div class="space-y-3">
+                        <div 
+                            onclick="setExample('Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-cyan-50 hover:text-cyan-700 transition-colors border border-gray-100"
+                        >
+                            Phường 12, Quận Gò Vấp, TP.HCM
+                        </div>
+                        <div 
+                            onclick="setExample('Phường An Lạc, Quận Bình Tân, Thành phố Hồ Chí Minh')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-cyan-50 hover:text-cyan-700 transition-colors border border-gray-100"
+                        >
+                            Phường An Lạc, Quận Bình Tân, TP.HCM
+                        </div>
+                        <div 
+                            onclick="setExample('Phường 15, Quận 10, Thành phố Hồ Chí Minh')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-cyan-50 hover:text-cyan-700 transition-colors border border-gray-100"
+                        >
+                            Phường 15, Quận 10, TP.HCM
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hanoi Examples -->
+                <div class="bg-gray-50 rounded-2xl p-6 border-l-4 border-purple-500">
+                    <h4 class="text-lg font-semibold text-purple-600 mb-4">Hà Nội</h4>
+                    <div class="space-y-3">
+                        <div 
+                            onclick="setExample('Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-purple-50 hover:text-purple-700 transition-colors border border-gray-100"
+                        >
+                            Phường Khương Mai, Quận Thanh Xuân, Hà Nội
+                        </div>
+                        <div 
+                            onclick="setExample('Phường Láng Thượng, Quận Đống Đa, Thành phố Hà Nội')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-purple-50 hover:text-purple-700 transition-colors border border-gray-100"
+                        >
+                            Phường Láng Thượng, Quận Đống Đa, Hà Nội
+                        </div>
+                        <div 
+                            onclick="setExample('Xã Phù Linh, Huyện Sóc Sơn, Thành phố Hà Nội')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-purple-50 hover:text-purple-700 transition-colors border border-gray-100"
+                        >
+                            Xã Phù Linh, Huyện Sóc Sơn, Hà Nội
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Provinces Examples -->
+                <div class="bg-gray-50 rounded-2xl p-6 border-l-4 border-green-500">
+                    <h4 class="text-lg font-semibold text-green-600 mb-4">Tỉnh khác</h4>
+                    <div class="space-y-3">
+                        <div 
+                            onclick="setExample('Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-green-50 hover:text-green-700 transition-colors border border-gray-100"
+                        >
+                            Xã Văn Luông, Huyện Tân Sơn, Phú Thọ
+                        </div>
+                        <div 
+                            onclick="setExample('Phường Hội An, Thành phố Hội An, Tỉnh Quảng Nam')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-green-50 hover:text-green-700 transition-colors border border-gray-100"
+                        >
+                            Phường Hội An, TP. Hội An, Quảng Nam
+                        </div>
+                        <div 
+                            onclick="setExample('Xã Ea Kao, Huyện Ea Kar, Tỉnh Đắk Lắk')"
+                            class="p-3 bg-white rounded-lg cursor-pointer hover:bg-green-50 hover:text-green-700 transition-colors border border-gray-100"
+                        >
+                            Xã Ea Kao, Huyện Ea Kar, Đắk Lắk
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Installation Section -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 mb-8 shadow-xl">
+            <div class="flex items-center justify-center mb-8">
+                <ion-icon name="settings" class="text-3xl text-gray-800 mr-3"></ion-icon>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                    Cài Đặt & Sử Dụng
+                </h2>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="flex flex-col md:flex-row bg-gray-100 rounded-2xl p-2 mb-6">
+                <button 
+                    class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 active"
+                    onclick="switchTab('npm')"
+                >
+                    NPM/Node.js
+                </button>
+                <button 
+                    class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300"
+                    onclick="switchTab('browser')"
+                >
+                    Browser/CDN
+                </button>
+                <button 
+                    class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300"
+                    onclick="switchTab('github')"
+                >
+                    GitHub
+                </button>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div id="npm-content" class="install-content">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Cài đặt qua npm:</h4>
+                <div class="relative bg-gray-900 rounded-xl p-4 mb-6 overflow-x-auto">
+                    <button 
+                        class="absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                        onclick="copyCode(this)"
+                    >
+                        Copy
+                    </button>
+                    <pre class="text-green-400 font-mono text-sm"><code>npm install vietnam-address-converter</code></pre>
+                </div>
+                
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Sử dụng trong Node.js:</h4>
+                <div class="relative bg-gray-900 rounded-xl p-4 overflow-x-auto">
+                    <button 
+                        class="absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                        onclick="copyCode(this)"
+                    >
+                        Copy
+                    </button>
+                    <pre class="text-green-400 font-mono text-sm"><code>import { VietnamAddressConverter } from 'vietnam-address-converter';
+
+const converter = new VietnamAddressConverter();
+await converter.initialize();
+
+const result = converter.convertAddress('Phường 12, Quận Gò Vấp, TP.HCM');
+console.log(result);</code></pre>
+                </div>
+            </div>
+            
+            <div id="browser-content" class="install-content hidden">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Sử dụng trong Browser qua CDN:</h4>
+                <div class="relative bg-gray-900 rounded-xl p-4 overflow-x-auto">
+                    <button 
+                        class="absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                        onclick="copyCode(this)"
+                    >
+                        Copy
+                    </button>
+                    <pre class="text-green-400 font-mono text-sm"><code>&lt;script src="https://unpkg.com/vietnam-address-converter@latest/dist/index.browser.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+const converter = new VietnamAddressConverter.VietnamAddressConverter();
+await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+
+const result = converter.convertAddress('Phường 12, Quận Gò Vấp, TP.HCM');
+console.log(result);
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+            
+            <div id="github-content" class="install-content hidden">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">GitHub Repository:</h4>
+                <div class="relative bg-gray-900 rounded-xl p-4 mb-6 overflow-x-auto">
+                    <button 
+                        class="absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                        onclick="copyCode(this)"
+                    >
+                        Copy
+                    </button>
+                    <pre class="text-green-400 font-mono text-sm"><code>git clone https://github.com/quangtam/vietnam-address-converter.git
+cd vietnam-address-converter
+npm install
+npm run build</code></pre>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <p class="text-blue-800">
+                        <strong>Tài liệu đầy đủ:</strong> 
+                        <a href="https://github.com/quangtam/vietnam-address-converter" target="_blank" class="text-blue-600 hover:text-blue-800 underline font-semibold">
+                            GitHub Repository
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center p-6 glass-effect rounded-3xl shadow-xl">
+            <div class="flex items-center justify-center mb-3">
+                <p class="text-white text-md">
+                    Made with ❤️ by
+                    <a href="https://github.com/quangtam/vietnam-address-converter" target="_blank" class="text-white hover:text-gray-200 underline font-semibold">
+                        Quang Tam
+                    </a> for Vietnam developers.
+                </p>
+            </div>
+            <p class="text-white/70 text-sm">
+                Dữ liệu dựa trên Nghị quyết 202/2025/QH15 của Quốc hội về việc sắp xếp đơn vị hành chính
+            </p>
         </div>
     </div>
 
@@ -153,13 +369,37 @@
         let converter = null;
         let isInitialized = false;
 
+        // Cập nhật stats từ dữ liệu thực tế
+        function updateStats(stats) {
+            // Cập nhật số tỉnh/thành phố
+            const provincesElement = document.getElementById('stats-provinces');
+            if (provincesElement && stats && (typeof stats.provinces === 'number' || typeof stats.provinces === 'string')) {
+                const value = typeof stats.provinces === 'number' ? stats.provinces.toLocaleString() : stats.provinces;
+                provincesElement.textContent = value;
+            }
+            
+            // Cập nhật số phường/xã
+            const wardsElement = document.getElementById('stats-wards');
+            if (wardsElement && stats && (typeof stats.wards === 'number' || typeof stats.wards === 'string')) {
+                const value = typeof stats.wards === 'number' ? stats.wards.toLocaleString() : stats.wards;
+                wardsElement.textContent = value;
+            }
+            
+            // Cập nhật số quy tắc mapping
+            const mappingsElement = document.getElementById('stats-mappings');
+            if (mappingsElement && stats && (typeof stats.mappings === 'number' || typeof stats.mappings === 'string')) {
+                const value = typeof stats.mappings === 'number' ? stats.mappings.toLocaleString() : stats.mappings;
+                mappingsElement.textContent = value;
+            }
+        }
+
         // Khởi tạo converter khi trang load
         async function initializeConverter() {
             try {
                 const resultDiv = document.getElementById('result');
                 resultDiv.style.display = 'block';
-                resultDiv.className = 'result loading';
-                resultDiv.innerHTML = '⏳ Đang khởi tạo converter và load dữ liệu...';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-gray-100 text-center text-gray-600';
+                resultDiv.innerHTML = '<div class="flex items-center justify-center"><ion-icon name="hourglass" class="text-xl mr-2 animate-pulse"></ion-icon>Đang khởi tạo converter và load dữ liệu...</div>';
 
                 // Tạo converter instance
                 converter = new VietnamAddressConverter.VietnamAddressConverter();
@@ -170,21 +410,38 @@
                 isInitialized = true;
                 resultDiv.style.display = 'none';
                 
+                // Cập nhật stats từ dữ liệu thực tế
+                updateStats(converter.dataLoader.getStats());
+                
                 // Enable convert button
                 document.getElementById('convertBtn').disabled = false;
-                console.log('✅ Converter đã sẵn sàng!');
                 
             } catch (error) {
-                console.error('❌ Lỗi khởi tạo:', error);
                 const resultDiv = document.getElementById('result');
                 resultDiv.style.display = 'block';
-                resultDiv.className = 'result error';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
                 resultDiv.innerHTML = `
-                    <h3>❌ Lỗi khởi tạo</h3>
+                    <div class="flex items-center justify-center mb-2">
+                        <ion-icon name="alert-circle" class="text-xl mr-2"></ion-icon>
+                        <h3 class="font-bold">Lỗi khởi tạo</h3>
+                    </div>
                     <p><strong>Lỗi:</strong> ${error.message}</p>
-                    <p><strong>Giải pháp:</strong> Hãy đảm bảo bạn đang chạy từ web server (không phải file://) và file data/address.json có thể truy cập được.</p>
+                    <p class="mt-2"><strong>Giải pháp:</strong> Hãy đảm bảo bạn đang chạy từ web server và có kết nối internet.</p>
                 `;
             }
+        }
+
+        // Việt hóa loại chuyển đổi
+        function translateMappingType(mappingType) {
+            const translations = {
+                'merged': 'Sáp nhập phường/xã',
+                'renamed': 'Đổi tên phường/xã',
+                'unchanged': 'Giữ nguyên',
+                'not_found': 'Không tìm thấy',
+                'exact': 'Trùng khớp chính xác',
+            };
+            
+            return translations[mappingType] || mappingType || 'Không xác định';
         }
 
         // Chuyển đổi địa chỉ
@@ -205,52 +462,74 @@
 
             try {
                 resultDiv.style.display = 'block';
-                resultDiv.className = 'result loading';
-                resultDiv.innerHTML = '⏳ Đang chuyển đổi địa chỉ...';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-gray-100 text-center text-gray-600';
+                resultDiv.innerHTML = '<div class="flex items-center justify-center"><ion-icon name="hourglass" class="text-xl mr-2 animate-pulse"></ion-icon>Đang chuyển đổi địa chỉ...</div>';
 
                 const result = converter.convertAddress(address);
 
                 if (result.success) {
-                    resultDiv.className = 'result success';
+                    resultDiv.className = 'mt-6 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800';
                     resultDiv.innerHTML = `
-                        <h3>✅ Chuyển đổi thành công!</h3>
-                        <p><strong>Địa chỉ gốc:</strong></p>
-                        <ul>
-                            <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
-                            <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
-                            <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
-                            <li>Đường/Số nhà: ${result.originalAddress.street || 'Không có'}</li>
-                        </ul>
-                        
-                        <p><strong>Địa chỉ mới:</strong></p>
-                        <ul>
-                            <li>Phường/Xã: ${result.convertedAddress.ward}</li>
-                            <li>Tỉnh/TP: ${result.convertedAddress.province}</li>
-                            <li>Đường/Số nhà: ${result.convertedAddress.street || 'Không có'}</li>
-                        </ul>
-                        
-                        <p><strong>Loại chuyển đổi:</strong> ${result.mappingInfo?.mappingType || 'Không xác định'}</p>
-                        <p><strong>Ghi chú:</strong> ${result.message}</p>
+                        <div class="flex items-center justify-center mb-3">
+                            <ion-icon name="checkmark-circle" class="text-2xl mr-2"></ion-icon>
+                            <h3 class="font-bold text-lg">Chuyển đổi thành công!</h3>
+                        </div>
+                        <div class="text-left space-y-4">
+                            <div class="bg-gray-100 p-4 rounded-lg border border-gray-400">
+                                <p class="font-semibold mb-2 text-gray-700">Địa chỉ gốc (cũ):</p>
+                                <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600">
+                                    <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
+                                    <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
+                                    <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
+                                    <li>Đường/Số nhà: ${result.originalAddress.street || 'Không có'}</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-100 p-4 rounded-lg border border-green-400">
+                                <p class="font-semibold mb-2 text-green-700">Địa chỉ mới (sau chuyển đổi):</p>
+                                <ul class="list-disc list-inside space-y-1 ml-4 text-green-600">
+                                    <li>Phường/Xã: ${result.convertedAddress.ward}</li>
+                                    <li>Tỉnh/TP: ${result.convertedAddress.province}</li>
+                                    <li>Đường/Số nhà: ${result.convertedAddress.street || 'Không có'}</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <p><strong>Loại chuyển đổi:</strong> ${translateMappingType(result.mappingInfo?.mappingType)}</p>
+                                <p><strong>Ghi chú:</strong> ${result.message}</p>
+                            </div>
+                        </div>
                     `;
                 } else {
-                    resultDiv.className = 'result error';
+                    resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
                     resultDiv.innerHTML = `
-                        <h3>❌ Không thể chuyển đổi</h3>
-                        <p><strong>Lỗi:</strong> ${result.message}</p>
-                        <p><strong>Địa chỉ gốc:</strong></p>
-                        <ul>
-                            <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
-                            <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
-                            <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
-                            <li>Đường/Số nhà: ${result.originalAddress.street || 'Không có'}</li>
-                        </ul>
+                        <div class="flex items-center justify-center mb-3">
+                            <ion-icon name="close-circle" class="text-2xl mr-2"></ion-icon>
+                            <h3 class="font-bold text-lg">Không thể chuyển đổi</h3>
+                        </div>
+                        <div class="text-left space-y-4">
+                            <div class="bg-red-100 p-3 rounded-lg border border-red-300">
+                                <p><strong>Lỗi:</strong> ${result.message}</p>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg border border-gray-300">
+                                <p class="font-semibold mb-2 text-gray-700">Địa chỉ cũ:</p>
+                                <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600">
+                                    <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
+                                    <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
+                                    <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
+                                    <li>Đường/Số nhà: ${result.originalAddress.street || 'Không có'}</li>
+                                </ul>
+                            </div>
+                        </div>
                     `;
                 }
             } catch (error) {
-                console.error('Lỗi chuyển đổi:', error);
-                resultDiv.className = 'result error';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
                 resultDiv.innerHTML = `
-                    <h3>❌ Lỗi hệ thống</h3>
+                    <div class="flex items-center justify-center mb-2">
+                        <ion-icon name="warning" class="text-xl mr-2"></ion-icon>
+                        <h3 class="font-bold text-lg">Lỗi hệ thống</h3>
+                    </div>
                     <p><strong>Chi tiết:</strong> ${error.message}</p>
                 `;
             }
@@ -259,6 +538,38 @@
         // Set example address
         function setExample(address) {
             document.getElementById('addressInput').value = address;
+        }
+
+        // Switch installation tabs
+        function switchTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.install-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active from all tabs
+            document.querySelectorAll('.install-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // Add active to selected tab
+            event.target.classList.add('active');
+        }
+
+        // Copy code to clipboard
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
         }
 
         // Handle Enter key
@@ -272,7 +583,15 @@
         document.getElementById('convertBtn').disabled = true;
 
         // Khởi tạo khi trang load
-        window.addEventListener('load', initializeConverter);
+        window.addEventListener('load', function() {
+            // Hiển thị loading state cho stats
+            document.getElementById('stats-provinces').textContent = '...';
+            document.getElementById('stats-wards').textContent = '...';
+            document.getElementById('stats-mappings').textContent = '...';
+            
+            // Khởi tạo converter
+            initializeConverter();
+        });
     </script>
 </body>
 </html>
