@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vietnam Address Converter - Browser Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #ecf0f1;
+        }
+        .success {
+            background: #d5f4e6;
+            border-left: 4px solid #27ae60;
+        }
+        .error {
+            background: #fdf2f2;
+            border-left: 4px solid #e74c3c;
+        }
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+        }
+        .example {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #17a2b8;
+        }
+        .example h3 {
+            margin-top: 0;
+            color: #17a2b8;
+        }
+        .example ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .example li {
+            margin: 5px 0;
+            cursor: pointer;
+            color: #495057;
+        }
+        .example li:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇻🇳 Vietnam Address Converter</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+            Chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết 202/2025/QH15
+        </p>
+
+        <div class="input-group">
+            <label for="addressInput">Nhập địa chỉ cần chuyển đổi:</label>
+            <input 
+                type="text" 
+                id="addressInput" 
+                placeholder="Ví dụ: Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh"
+                value=""
+            >
+        </div>
+
+        <button id="convertBtn" onclick="convertAddress()">🔄 Chuyển đổi địa chỉ</button>
+
+        <div id="result" class="result" style="display: none;"></div>
+
+        <div class="example">
+            <h3>💡 Ví dụ địa chỉ (click để thử):</h3>
+            <ul>
+                <li onclick="setExample('Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh')">
+                    Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh
+                </li>
+                <li onclick="setExample('Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ')">
+                    Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ
+                </li>
+                <li onclick="setExample('Phường An Lạc, Quận Bình Tân, Thành phố Hồ Chí Minh')">
+                    Phường An Lạc, Quận Bình Tân, Thành phố Hồ Chí Minh
+                </li>
+                <li onclick="setExample('Số 20 Ngõ 192 Lê Trọng Tấn, Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội')">
+                    Số 20 Ngõ 192 Lê Trọng Tấn, Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Load thư viện từ CDN -->
+    <script src="https://unpkg.com/vietnam-address-converter@latest/dist/index.browser.js"></script>
+    
+    <script>
+        let converter = null;
+        let isInitialized = false;
+
+        // Khởi tạo converter khi trang load
+        async function initializeConverter() {
+            try {
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result loading';
+                resultDiv.innerHTML = '⏳ Đang khởi tạo converter và load dữ liệu...';
+
+                // Tạo converter instance
+                converter = new VietnamAddressConverter.VietnamAddressConverter();
+                
+                // Load dữ liệu từ CDN
+                await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+                
+                isInitialized = true;
+                resultDiv.style.display = 'none';
+                
+                // Enable convert button
+                document.getElementById('convertBtn').disabled = false;
+                console.log('✅ Converter đã sẵn sàng!');
+                
+            } catch (error) {
+                console.error('❌ Lỗi khởi tạo:', error);
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Lỗi khởi tạo</h3>
+                    <p><strong>Lỗi:</strong> ${error.message}</p>
+                    <p><strong>Giải pháp:</strong> Hãy đảm bảo bạn đang chạy từ web server (không phải file://) và file data/address.json có thể truy cập được.</p>
+                `;
+            }
+        }
+
+        // Chuyển đổi địa chỉ
+        async function convertAddress() {
+            if (!isInitialized || !converter) {
+                alert('Converter chưa được khởi tạo. Vui lòng chờ...');
+                return;
+            }
+
+            const addressInput = document.getElementById('addressInput');
+            const address = addressInput.value.trim();
+            const resultDiv = document.getElementById('result');
+
+            if (!address) {
+                alert('Vui lòng nhập địa chỉ cần chuyển đổi');
+                return;
+            }
+
+            try {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result loading';
+                resultDiv.innerHTML = '⏳ Đang chuyển đổi địa chỉ...';
+
+                const result = converter.convertAddress(address);
+
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Chuyển đổi thành công!</h3>
+                        <p><strong>Địa chỉ gốc:</strong></p>
+                        <ul>
+                            <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
+                            <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
+                            <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
+                            <li>Đường/Số nhà: ${result.originalAddress.street || 'Không có'}</li>
+                        </ul>
+                        
+                        <p><strong>Địa chỉ mới:</strong></p>
+                        <ul>
+                            <li>Phường/Xã: ${result.convertedAddress.ward}</li>
+                            <li>Tỉnh/TP: ${result.convertedAddress.province}</li>
+                            <li>Đường/Số nhà: ${result.convertedAddress.street || 'Không có'}</li>
+                        </ul>
+                        
+                        <p><strong>Loại chuyển đổi:</strong> ${result.mappingInfo?.mappingType || 'Không xác định'}</p>
+                        <p><strong>Ghi chú:</strong> ${result.message}</p>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Không thể chuyển đổi</h3>
+                        <p><strong>Lỗi:</strong> ${result.message}</p>
+                        <p><strong>Địa chỉ gốc:</strong></p>
+                        <ul>
+                            <li>Phường/Xã: ${result.originalAddress.ward || 'Không có'}</li>
+                            <li>Quận/Huyện: ${result.originalAddress.district || 'Không có'}</li>
+                            <li>Tỉnh/TP: ${result.originalAddress.province || 'Không có'}</li>
+                            <li>Đường/Số nhà: ${result.originalAddress.street || 'Không có'}</li>
+                        </ul>
+                    `;
+                }
+            } catch (error) {
+                console.error('Lỗi chuyển đổi:', error);
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Lỗi hệ thống</h3>
+                    <p><strong>Chi tiết:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        // Set example address
+        function setExample(address) {
+            document.getElementById('addressInput').value = address;
+        }
+
+        // Handle Enter key
+        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                convertAddress();
+            }
+        });
+
+        // Disable button initially
+        document.getElementById('convertBtn').disabled = true;
+
+        // Khởi tạo khi trang load
+        window.addEventListener('load', initializeConverter);
+    </script>
+</body>
+</html>

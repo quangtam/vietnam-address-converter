@@ -6,7 +6,7 @@ Thư viện JavaScript/TypeScript để tự động chuyển đổi địa ch�
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue.svg)](https://www.typescriptlang.org/)
 
-📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)**
+📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)** | 🌐 **[Live Demo](https://quangtam.github.io/vietnam-address-converter/)**
 
 ## ✨ Tính năng chính
 
@@ -38,7 +38,7 @@ npm install vietnam-address-converter
 
 ## 🚀 Sử dụng cơ bản
 
-### 1. Khởi tạo và chuyển đổi địa chỉ
+### 1. Node.js Environment
 
 ```javascript
 import { VietnamAddressConverter } from 'vietnam-address-converter';
@@ -59,7 +59,49 @@ if (result.success) {
 }
 ```
 
-### 2. Chuyển đổi từ object
+### 2. Browser Environment
+
+🌐 **[Try Live Demo](https://quangtam.github.io/vietnam-address-converter/)** - Trải nghiệm trực tiếp trên trình duyệt
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/vietnam-address-converter@latest/dist/index.browser.js"></script>
+</head>
+<body>
+  <script>
+    async function convertAddress() {
+      // Khởi tạo converter
+      const converter = new VietnamAddressConverter.VietnamAddressConverter();
+      
+      // Load dữ liệu từ CDN
+      await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+      
+      // Chuyển đổi địa chỉ
+      const result = converter.convertAddress('Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh');
+      console.log(result);
+    }
+    
+    convertAddress();
+  </script>
+</body>
+</html>
+```
+
+### 3. ES Modules trong Browser
+
+```javascript
+import { VietnamAddressConverter } from 'https://unpkg.com/vietnam-address-converter@latest/dist/index.esm.js';
+
+const converter = new VietnamAddressConverter();
+// Load data từ CDN
+await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+
+const result = converter.convertAddress('Phường 12, Quận Gò Vấp, TP.HCM');
+```
+
+### 4. Chuyển đổi từ object
 
 ```javascript
 // Địa chỉ cũ (có Quận/Huyện)
@@ -86,12 +128,22 @@ const result = converter.convertAddress(addressObject);
 
 #### Khởi tạo
 
+**Node.js:**
 ```javascript
 const converter = new VietnamAddressConverter();
 await converter.initialize(); // Sử dụng dữ liệu mặc định
 
 // Hoặc sử dụng file dữ liệu tùy chỉnh
 await converter.initialize('/path/to/custom/data.json');
+```
+
+**Browser:**
+```javascript
+const converter = new VietnamAddressConverter();
+await converter.initializeFromUrl(); // Sử dụng './data/address.json'
+
+// Hoặc sử dụng URL tùy chỉnh
+await converter.initializeFromUrl('/path/to/custom/data.json');
 ```
 
 #### convertAddress(address)

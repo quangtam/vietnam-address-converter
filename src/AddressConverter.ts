@@ -34,12 +34,29 @@ export class VietnamAddressConverter {
   }
 
   /**
-   * Khởi tạo với dữ liệu mặc định
+   * Khởi tạo với dữ liệu mặc định (Node.js)
    */
   async initialize(dataFilePath?: string): Promise<void> {
     try {
       const startTime = performance.now();
       await this.dataLoader.loadFromFile(dataFilePath);
+      const endTime = performance.now();
+      
+      this.isInitialized = true;
+      console.log(`🚀 Converter initialized in ${Math.round(endTime - startTime)}ms`);
+      console.log('📊 Data stats:', this.dataLoader.getStats());
+    } catch (error) {
+      throw new Error(`Không thể khởi tạo converter: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Khởi tạo với dữ liệu từ URL (Browser)
+   */
+  async initializeFromUrl(dataUrl?: string): Promise<void> {
+    try {
+      const startTime = performance.now();
+      await this.dataLoader.loadFromUrl(dataUrl);
       const endTime = performance.now();
       
       this.isInitialized = true;

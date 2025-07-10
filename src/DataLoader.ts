@@ -1,6 +1,4 @@
 import { Province, Ward, WardMapping, DatabaseExport } from './types';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 /**
  * Class để load và parse dữ liệu từ file address.json
@@ -18,6 +16,15 @@ export class DataLoader {
     try {
       let data: DatabaseExport[];
       
+      if (typeof window !== 'undefined') {
+        // Browser environment - fetch from URL
+        throw new Error('DataLoader không hỗ trợ browser environment. Sử dụng loadFromUrl() thay thế.');
+      }
+      
+      // Node.js environment - dynamic import
+      const { readFileSync } = await import('fs');
+      const { join } = await import('path');
+      
       if (filePath) {
         // Load từ file path tùy chỉnh
         const rawContent = readFileSync(filePath, 'utf8');
@@ -33,6 +40,31 @@ export class DataLoader {
       this.parseData();
     } catch (error) {
       throw new Error(`Không thể load dữ liệu: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Load dữ liệu từ URL (cho browser environment)
+   */
+  async loadFromUrl(url?: string): Promise<void> {
+    try {
+      if (typeof window === 'undefined') {
+        throw new Error('loadFromUrl() chỉ hỗ trợ browser environment. Sử dụng loadFromFile() trong Node.js.');
+      }
+
+      const defaultUrl = './data/address.json'; // Relative URL for browser
+      const targetUrl = url || defaultUrl;
+      
+      const response = await fetch(targetUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data: DatabaseExport[] = await response.json();
+      this.rawData = data;
+      this.parseData();
+    } catch (error) {
+      throw new Error(`Không thể load dữ liệu từ URL: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
