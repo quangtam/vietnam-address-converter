@@ -253,13 +253,19 @@
                     class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 active"
                     onclick="switchTab('npm')"
                 >
-                    NPM/Node.js
+                    JavaScript/NPM
                 </button>
                 <button 
                     class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300"
                     onclick="switchTab('browser')"
                 >
                     Browser/CDN
+                </button>
+                <button 
+                    class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300"
+                    onclick="switchTab('php')"
+                >
+                    PHP
                 </button>
                 <button 
                     class="install-tab flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300"
@@ -320,6 +326,54 @@ console.log(result);
                 </div>
             </div>
             
+            <div id="php-content" class="install-content hidden">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Cài đặt qua Composer:</h4>
+                <div class="relative bg-gray-900 rounded-xl p-4 mb-6 overflow-x-auto">
+                    <button 
+                        class="absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                        onclick="copyCode(this)"
+                    >
+                        Copy
+                    </button>
+                    <pre class="text-green-400 font-mono text-sm"><code>composer require quangtam/vietnam-address-converter-php</code></pre>
+                </div>
+                
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Sử dụng trong PHP:</h4>
+                <div class="relative bg-gray-900 rounded-xl p-4 mb-6 overflow-x-auto">
+                    <button 
+                        class="absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                        onclick="copyCode(this)"
+                    >
+                        Copy
+                    </button>
+                    <pre class="text-green-400 font-mono text-sm"><code>&lt;?php
+require_once 'vendor/autoload.php';
+
+use VietnamAddressConverter\VietnamAddressConverter;
+
+$converter = new VietnamAddressConverter();
+$result = $converter->convertAddress('Phường 12, Quận Gò Vấp, TP.HCM');
+
+if ($result['success']) {
+    echo "Địa chỉ cũ: " . json_encode($result['originalAddress']) . "\n";
+    echo "Địa chỉ mới: " . json_encode($result['convertedAddress']) . "\n";
+}
+?&gt;</code></pre>
+                </div>
+                
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                    <p class="text-purple-800">
+                        <strong>🟦 PHP Version:</strong> 
+                        <a href="https://github.com/quangtam/vietnam-address-converter-php" target="_blank" class="text-purple-600 hover:text-purple-800 underline font-semibold">
+                            vietnam-address-converter-php
+                        </a>
+                    </p>
+                    <p class="text-purple-700 text-sm mt-2">
+                        Thư viện PHP với API tương tự, sử dụng cùng dữ liệu mapping để đảm bảo tính nhất quán.
+                    </p>
+                </div>
+            </div>
+            
             <div id="github-content" class="install-content hidden">
                 <h4 class="text-lg font-semibold text-gray-800 mb-4">GitHub Repository:</h4>
                 <div class="relative bg-gray-900 rounded-xl p-4 mb-6 overflow-x-auto">
@@ -343,6 +397,59 @@ npm run build</code></pre>
                         </a>
                     </p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Other Language Implementations Section -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 mb-8 shadow-xl">
+            <div class="flex items-center justify-center mb-8">
+                <ion-icon name="globe" class="text-3xl text-gray-800 mr-3"></ion-icon>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                    Thư Viện Cho Ngôn Ngữ Khác
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- JavaScript/TypeScript -->
+                <div class="bg-yellow-50 rounded-2xl p-6 border-l-4 border-yellow-500">
+                    <div class="flex items-center mb-4">
+                        <ion-icon name="logo-javascript" class="text-2xl text-yellow-600 mr-3"></ion-icon>
+                        <h4 class="text-lg font-semibold text-yellow-700">JavaScript/TypeScript</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4">Thư viện chính (repository này) - hỗ trợ Node.js và Browser</p>
+                    <a 
+                        href="https://github.com/quangtam/vietnam-address-converter" 
+                        target="_blank"
+                        class="inline-flex items-center bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                    >
+                        <ion-icon name="logo-github" class="mr-2"></ion-icon>
+                        GitHub Repository
+                    </a>
+                </div>
+
+                <!-- PHP -->
+                <div class="bg-purple-50 rounded-2xl p-6 border-l-4 border-purple-500">
+                    <div class="flex items-center mb-4">
+                        <ion-icon name="logo-octocat" class="text-2xl text-purple-600 mr-3"></ion-icon>
+                        <h4 class="text-lg font-semibold text-purple-700">PHP</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4">Thư viện PHP với API tương tự, cài đặt qua Composer</p>
+                    <a 
+                        href="https://github.com/quangtam/vietnam-address-converter-php" 
+                        target="_blank"
+                        class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                    >
+                        <ion-icon name="logo-github" class="mr-2"></ion-icon>
+                        GitHub Repository
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <p class="text-blue-800 text-center">
+                    <ion-icon name="information-circle" class="mr-2"></ion-icon>
+                    <strong>Tính nhất quán:</strong> Tất cả thư viện đều sử dụng cùng dữ liệu mapping và logic chuyển đổi để đảm bảo kết quả nhất quán.
+                </p>
             </div>
         </div>
 

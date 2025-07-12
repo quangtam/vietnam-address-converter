@@ -8,7 +8,7 @@ Thư viện JavaScript/TypeScript để tự động chuyển đổi địa ch�
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue.svg)](https://www.typescriptlang.org/)
 
-📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)** | 🌐 **[Live Demo](https://quangtam.github.io/vietnam-address-converter/)**
+📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)** | 🌐 **[Live Demo](https://quangtam.github.io/vietnam-address-converter/)** | 🟦 **[PHP Version](https://github.com/quangtam/vietnam-address-converter-php)**
 
 ## ✨ Tính năng chính
 
@@ -323,6 +323,17 @@ node examples/demo.ts
 - 🔧 **[TypeScript Definitions](./dist/index.d.ts)** - Type definitions
 - 🧪 **[Examples](./examples/)** - Code examples
 - 🏃‍♂️ **[Demo Script](./test-library.mjs)** - Local testing script
+
+## 🌍 Other Language Implementations
+
+Vietnam Address Converter hiện có sẵn cho nhiều ngôn ngữ lập trình:
+
+- 🟨 **JavaScript/TypeScript**: [vietnam-address-converter](https://github.com/quangtam/vietnam-address-converter) (repo này)
+- 🟦 **PHP**: [vietnam-address-converter-php](https://github.com/quangtam/vietnam-address-converter-php) - Thư viện PHP với API tương tự
+- 🔴 **Python**: Coming soon...
+- 🟩 **Go**: Coming soon...
+
+> 💡 Tất cả implementations đều sử dụng cùng dữ liệu mapping và logic chuyển đổi để đảm bảo tính nhất quán.
 
 ## 🤝 Đóng góp
 
