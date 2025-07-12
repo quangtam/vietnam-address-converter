@@ -8,7 +8,7 @@ Thư viện JavaScript/TypeScript để tự động chuyển đổi địa ch�
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue.svg)](https://www.typescriptlang.org/)
 
-📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)** | 🌐 **[Live Demo](https://quangtam.github.io/vietnam-address-converter/)** | 🟦 **[PHP Version](https://github.com/quangtam/vietnam-address-converter-php)**
+📦 **[NPM Package](https://www.npmjs.com/package/vietnam-address-converter)** | 📚 **[Quick Start](./QUICKSTART.md)** | 🌐 **[Live Demo]([https://diachi.info.vn](https://diachi.info.vn))** | 🟦 **[PHP Version](https://github.com/quangtam/vietnam-address-converter-php)**
 
 ## ✨ Tính năng chính
 
@@ -63,7 +63,7 @@ if (result.success) {
 
 ### 2. Browser Environment
 
-🌐 **[Try Live Demo](https://quangtam.github.io/vietnam-address-converter/)** - Trải nghiệm trực tiếp trên trình duyệt
+🌐 **[Try Live Demo]([https://diachi.info.vn](https://diachi.info.vn))** - Trải nghiệm trực tiếp trên trình duyệt
 
 ```html
 <!DOCTYPE html>
