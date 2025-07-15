@@ -22,7 +22,8 @@ async function testLibrary() {
       'Xóm Lũng, Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ',
       'Phú Hồng, Huyện Ba Vì, Thành phố Hà Nội',
       'Phường An Lạc, Quận Bình Tân, Thành phố Hồ Chí Minh',
-      'Số 20 Ngõ 192 Lê Trọng Tấn, Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội'
+      'Số 20 Ngõ 192 Lê Trọng Tấn, Phường Khương Mai, Quận Thanh Xuân, Thành phố Hà Nội',
+      'Thôn Vân Sa, Xã Tản Hồng, Huyện Ba Vì, Thành phố Hà Nội'
     ];
     
     for (let i = 0; i < testCases.length; i++) {

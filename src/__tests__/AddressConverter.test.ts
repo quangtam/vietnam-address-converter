@@ -1,15 +1,13 @@
 import { VietnamAddressConverter } from '../index';
 import { FullAddress } from '../types';
-import { join } from 'path';
 
 describe('VietnamAddressConverter', () => {
   let converter: VietnamAddressConverter;
 
   beforeAll(async () => {
     converter = new VietnamAddressConverter();
-    // Provide explicit path for test environment
-    const dataPath = join(process.cwd(), 'src', 'data', 'address.json');
-    await converter.initialize(dataPath);
+    // Sử dụng vietnam-address-database
+    await converter.initialize();
   });
 
   test('should initialize successfully', () => {

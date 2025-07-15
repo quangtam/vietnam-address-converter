@@ -47,6 +47,9 @@
   ],
   "author": "Quang Tam <quangtamvu@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "vietnam-address-database": "^1.0.0"
+  },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
     "@types/jest": "^29.5.14",

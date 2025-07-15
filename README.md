@@ -1,6 +1,14 @@
 # Vietnam Address Converter
 
-Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
+Thư v## 📦 Cài đặt
+
+```bash
+npm install vietnam-address-converter
+```
+
+> **Lưu ý**: 
+> - Thư viện sử dụng `vietnam-address-database` để cung cấp dữ liệu mapping, đảm bảo dữ liệu luôn cập nhật và đồng bộ.
+> - Trong browser, dữ liệu được load từ CDN của `vietnam-address-database` để đảm bảo phiên bản mới nhất.avaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
 
 [![npm version](https://img.shields.io/npm/v/vietnam-address-converter.svg)](https://www.npmjs.com/package/vietnam-address-converter)
 [![Build Status](https://github.com/quangtam/vietnam-address-converter/workflows/Build%20and%20Test/badge.svg)](https://github.com/quangtam/vietnam-address-converter/actions)
@@ -77,8 +85,8 @@ if (result.success) {
       // Khởi tạo converter
       const converter = new VietnamAddressConverter.VietnamAddressConverter();
       
-      // Load dữ liệu từ CDN
-      await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+      // Load dữ liệu từ CDN của vietnam-address-database
+      await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');
       
       // Chuyển đổi địa chỉ
       const result = converter.convertAddress('Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh');
@@ -97,8 +105,8 @@ if (result.success) {
 import { VietnamAddressConverter } from 'https://unpkg.com/vietnam-address-converter@latest/dist/index.esm.js';
 
 const converter = new VietnamAddressConverter();
-// Load data từ CDN
-await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+// Load data từ CDN của vietnam-address-database
+await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');
 
 const result = converter.convertAddress('Phường 12, Quận Gò Vấp, TP.HCM');
 ```
@@ -142,7 +150,7 @@ await converter.initialize('/path/to/custom/data.json');
 **Browser:**
 ```javascript
 const converter = new VietnamAddressConverter();
-await converter.initializeFromUrl(); // Sử dụng './data/address.json'
+await converter.initializeFromUrl(); // Sử dụng default: vietnam-address-database CDN
 
 // Hoặc sử dụng URL tùy chỉnh
 await converter.initializeFromUrl('/path/to/custom/data.json');

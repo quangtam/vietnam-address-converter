@@ -20,14 +20,9 @@ export default [
       typescript({
         rollupCommonJSResolveHack: false,
         clean: true
-      }),
-      copy({
-        targets: [
-          { src: 'src/data', dest: 'dist' }
-        ]
       })
     ],
-    external: ['fs', 'path', 'url']
+    external: ['fs', 'path', 'url', 'vietnam-address-database']
   },
   // Browser build
   {
@@ -45,7 +40,8 @@ export default [
       }),
       copy({
         targets: [
-          { src: 'src/data', dest: 'dist' }
+          // Copy data từ vietnam-address-database package cho browser
+          { src: 'node_modules/vietnam-address-database/dist/address.json', dest: 'dist/data' }
         ]
       })
     ],

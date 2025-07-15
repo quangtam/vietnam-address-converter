@@ -28,6 +28,9 @@ async function main() {
     
     // Case 4: Địa chỉ có đường
     '123 Nguyễn Văn Cừ, Phường 5, Quận Gò Vấp, Thành phố Hồ Chí Minh',
+
+    // Case 5: Địa chỉ được thay đổi 2 lần từ tháng 12/2024 đến 01/07/2025
+    'Thôn Vân Sa, Xã Tản Hồng, Huyện Ba Vì, Thành phố Hà Nội',
   ];
   
   console.log('🔄 Kết quả chuyển đổi địa chỉ:\n');
