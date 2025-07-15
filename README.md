@@ -365,7 +365,7 @@ Chúng tôi hoan nghênh mọi đóng góp! Vui lòng:
 
 ## 🙏 Cảm ơn
 
-- Dữ liệu từ [thanhtrungit97/dvhcvn](https://github.com/thanhtrungit97/dvhcvn)
+- Dữ liệu từ [vietnam-address-database](https://github.com/quangtam/vietnam-address-database)
 - Nghị quyết số 202/2025/QH15 của Quốc hội
 
 ---
