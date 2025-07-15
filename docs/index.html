@@ -8,14 +8,40 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'purple-gradient-from': '#667eea',
-                        'purple-gradient-to': '#764ba2',
-                    }
-                }
+            // Khởi tạo converter khi trang load
+        async function initializeConverter() {
+            try {
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-gray-100 text-center text-gray-600';
+                resultDiv.innerHTML = '<div class="flex items-center justify-center"><ion-icon name="hourglass" class="text-xl mr-2 animate-pulse"></ion-icon>Đang khởi tạo converter và load dữ liệu...</div>';
+
+                // Tạo converter instance
+                converter = new VietnamAddressConverter.VietnamAddressConverter();
+                
+                // Load dữ liệu từ vietnam-address-database CDN
+                await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');
+                // config = {
+                //     theme: {
+                //         extend: {
+                //             colors: {
+                //                 'purple-gradient-from': '#667eea',
+                //                 'purple-gradient-to': '#764ba2',
+                //             }
+                //         }
+                //     }
+                // }
+            } catch (error) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
+                resultDiv.innerHTML = `
+                    <div class="flex items-center justify-center">
+                        <ion-icon name="alert-circle" class="text-xl mr-2"></ion-icon>
+                        <span>Không thể khởi tạo converter: ${error.message}</span> 
+                        <button class="ml-4 text-blue-600 hover:underline" onclick="initializeConverter()">Thử lại</button>
+                    </div>
+                `;
             }
         }
     </script>
@@ -318,7 +344,7 @@ console.log(result);</code></pre>
                     <pre class="text-green-400 font-mono text-sm"><code>&lt;script src="https://unpkg.com/vietnam-address-converter@latest/dist/index.browser.js"&gt;&lt;/script&gt;
 &lt;script&gt;
 const converter = new VietnamAddressConverter.VietnamAddressConverter();
-await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');
 
 const result = converter.convertAddress('Phường 12, Quận Gò Vấp, TP.HCM');
 console.log(result);
@@ -511,8 +537,8 @@ npm run build</code></pre>
                 // Tạo converter instance
                 converter = new VietnamAddressConverter.VietnamAddressConverter();
                 
-                // Load dữ liệu từ CDN
-                await converter.initializeFromUrl('https://unpkg.com/vietnam-address-converter@latest/dist/data/address.json');
+                // Load dữ liệu từ vietnam-address-database CDN
+                await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');
                 
                 isInitialized = true;
                 resultDiv.style.display = 'none';

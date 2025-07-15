@@ -1,7 +1,7 @@
 import { Province, Ward, WardMapping, DatabaseExport } from './types';
 
 /**
- * Class để load và parse dữ liệu từ file address.json
+ * Class để load và parse dữ liệu từ thư viện vietnam-address-database
  */
 export class DataLoader {
   private rawData: DatabaseExport[] = [];
@@ -10,7 +10,7 @@ export class DataLoader {
   private wardMappings: WardMapping[] = [];
 
   /**
-   * Load dữ liệu từ file JSON
+   * Load dữ liệu từ thư viện vietnam-address-database
    */
   async loadFromFile(filePath?: string): Promise<void> {
     try {
@@ -21,19 +21,25 @@ export class DataLoader {
         throw new Error('DataLoader không hỗ trợ browser environment. Sử dụng loadFromUrl() thay thế.');
       }
       
-      // Node.js environment - dynamic import
-      const { readFileSync } = await import('fs');
-      const { join } = await import('path');
-      
       if (filePath) {
         // Load từ file path tùy chỉnh
+        const { readFileSync } = await import('fs');
         const rawContent = readFileSync(filePath, 'utf8');
         data = JSON.parse(rawContent);
       } else {
-        // Load từ file mặc định trong thư viện
-        const dataPath = join(process.cwd(), 'src', 'data', 'address.json');
-        const rawContent = readFileSync(dataPath, 'utf8');
-        data = JSON.parse(rawContent);
+        // Load từ thư viện vietnam-address-database
+        try {
+          const addressDatabase = await import('vietnam-address-database');
+          // Thư viện export trực tiếp array dữ liệu
+          data = addressDatabase.default || addressDatabase as any;
+        } catch (importError) {
+          // Fallback: nếu không import được, thử load từ node_modules
+          const { readFileSync } = await import('fs');
+          const { join } = await import('path');
+          const packagePath = join(process.cwd(), 'node_modules', 'vietnam-address-database', 'dist', 'address.json');
+          const rawContent = readFileSync(packagePath, 'utf8');
+          data = JSON.parse(rawContent);
+        }
       }
       
       this.rawData = data;
@@ -52,7 +58,7 @@ export class DataLoader {
         throw new Error('loadFromUrl() chỉ hỗ trợ browser environment. Sử dụng loadFromFile() trong Node.js.');
       }
 
-      const defaultUrl = './data/address.json'; // Relative URL for browser
+      const defaultUrl = 'https://unpkg.com/vietnam-address-database@latest/address.json'; // CDN URL for browser
       const targetUrl = url || defaultUrl;
       
       const response = await fetch(targetUrl);
