@@ -20,14 +20,28 @@
                 converter = new VietnamAddressConverter.VietnamAddressConverter();
                 
                 // Load dữ liệu từ vietnam-address-database CDN
-                await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'purple-gradient-from': '#667eea',
-                        'purple-gradient-to': '#764ba2',
-                    }
-                }
+                await converter.initializeFromUrl('https://unpkg.com/vietnam-address-database@latest/address.json');
+                // config = {
+                //     theme: {
+                //         extend: {
+                //             colors: {
+                //                 'purple-gradient-from': '#667eea',
+                //                 'purple-gradient-to': '#764ba2',
+                //             }
+                //         }
+                //     }
+                // }
+            } catch (error) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800';
+                resultDiv.innerHTML = `
+                    <div class="flex items-center justify-center">
+                        <ion-icon name="alert-circle" class="text-xl mr-2"></ion-icon>
+                        <span>Không thể khởi tạo converter: ${error.message}</span> 
+                        <button class="ml-4 text-blue-600 hover:underline" onclick="initializeConverter()">Thử lại</button>
+                    </div>
+                `;
             }
         }
     </script>

@@ -1,6 +1,6 @@
 {
   "name": "vietnam-address-converter",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết 202/2025/QH15",
   "type": "module",
   "main": "dist/index.js",

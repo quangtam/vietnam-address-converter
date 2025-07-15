@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## [1.1.0] - 2025-07-16
+
+### 🔄 Major Database Migration
+- **BREAKING**: Migrated from local `src/data/address.json` to external `vietnam-address-database` package
+- Added `vietnam-address-database` as dependency for consistent data across all implementations
+- Updated all DataLoader classes to use vietnam-address-database as primary data source
+
+### 🌐 Browser CDN Updates  
+- Updated default browser CDN URL from `./data/address.json` to `vietnam-address-database` CDN
+- Browser environments now automatically load from `https://unpkg.com/vietnam-address-database@latest/dist/address.json`
+- Ensures all implementations (JS, PHP) use the same data source
+
+### 📚 Documentation Updates
+- Updated README.md to reference vietnam-address-database CDN
+- Updated demo page to use vietnam-address-database
+- Added notes about data consistency across language implementations
+
+### 🏗️ Build System Changes
+- Removed copying of local data files in build process
+- External vietnam-address-database for Node.js, CDN for browser
+- Smaller bundle size (no embedded data)
+
+### ✅ Quality Assurance
+- All tests updated and passing (25/25)
+- Performance maintained (~1ms/address)
+- Backward compatibility preserved
+
 ## [1.0.4] - 2025-07-10
 
 ### 🔄 Major Refactor
