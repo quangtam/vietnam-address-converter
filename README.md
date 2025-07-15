@@ -1,6 +1,7 @@
 # Vietnam Address Converter
 
-Thư v## 📦 Cài đặt
+Thư viện JavaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
+## 📦 Cài đặt
 
 ```bash
 npm install vietnam-address-converter
@@ -8,7 +9,7 @@ npm install vietnam-address-converter
 
 > **Lưu ý**: 
 > - Thư viện sử dụng `vietnam-address-database` để cung cấp dữ liệu mapping, đảm bảo dữ liệu luôn cập nhật và đồng bộ.
-> - Trong browser, dữ liệu được load từ CDN của `vietnam-address-database` để đảm bảo phiên bản mới nhất.avaScript/TypeScript để tự động chuyển đổi địa chỉ hành chính Việt Nam từ cũ sang mới theo Nghị quyết số 202/2025/QH15 của Quốc hội.
+> - Trong browser, dữ liệu được load từ CDN của `vietnam-address-database` để đảm bảo phiên bản mới nhất.
 
 [![npm version](https://img.shields.io/npm/v/vietnam-address-converter.svg)](https://www.npmjs.com/package/vietnam-address-converter)
 [![Build Status](https://github.com/quangtam/vietnam-address-converter/workflows/Build%20and%20Test/badge.svg)](https://github.com/quangtam/vietnam-address-converter/actions)
