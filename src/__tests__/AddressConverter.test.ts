@@ -81,6 +81,8 @@ describe('VietnamAddressConverter', () => {
     expect(result.success).toBe(true);
     if (result.convertedAddress) {
       expect(result.convertedAddress.province).toBeDefined();
+      expect(result.convertedAddress.ward).toBeDefined();
+      expect(result.convertedAddress.street).toBe('Xóm Lũng');
       expect(result.convertedAddress).not.toHaveProperty('district');
     }
   });
