@@ -76,6 +76,15 @@ describe('VietnamAddressConverter', () => {
     }
   });
 
+  test('should convert address with trailing Việt Nam', () => {
+    const result = converter.convertAddress('Xóm Lũng, Xã Văn Luông, Huyện Tân Sơn, Tỉnh Phú Thọ, Việt Nam');
+    expect(result.success).toBe(true);
+    if (result.convertedAddress) {
+      expect(result.convertedAddress.province).toBeDefined();
+      expect(result.convertedAddress).not.toHaveProperty('district');
+    }
+  });
+
   test('should return error for invalid address', () => {
     const result = converter.convertAddress('');
     expect(result.success).toBe(false);

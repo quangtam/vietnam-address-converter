@@ -38,6 +38,28 @@ describe('Utils', () => {
     it('should handle empty input', () => {
       expect(parseAddress('')).toEqual({});
     });
+
+    it('should strip trailing "Việt Nam" from address', () => {
+      const result = parseAddress('Tầng 15, Tòa nhà CIC TOWER, số 2 ngõ 219 Phố Trung Kính, Phường Yên Hoà, Quận Cầu Giấy, Thành phố Hà Nội, Việt Nam');
+      
+      expect(result).toEqual({
+        street: 'Tầng 15, Tòa nhà CIC TOWER, số 2 ngõ 219 Phố Trung Kính',
+        ward: 'Phường Yên Hoà',
+        district: 'Quận Cầu Giấy',
+        province: 'Thành phố Hà Nội'
+      });
+    });
+
+    it('should strip trailing "Vietnam" from address', () => {
+      const result = parseAddress('123 Nguyễn Văn Cừ, Phường 5, Quận Gò Vấp, Thành phố Hồ Chí Minh, Vietnam');
+      
+      expect(result).toEqual({
+        street: '123 Nguyễn Văn Cừ',
+        ward: 'Phường 5',
+        district: 'Quận Gò Vấp',
+        province: 'Thành phố Hồ Chí Minh'
+      });
+    });
   });
 
   describe('fuzzyContains', () => {

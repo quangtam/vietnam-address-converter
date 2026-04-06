@@ -121,6 +121,14 @@ export function parseAddress(address: string): {
   if (!address) return {};
   
   const parts = address.split(',').map(part => part.trim()).filter(Boolean);
+
+  // Loại bỏ "Việt Nam" / "Vietnam" ở cuối địa chỉ
+  if (parts.length > 1) {
+    const last = normalizeText(parts[parts.length - 1]);
+    if (last === 'viet nam' || last === 'vietnam') {
+      parts.pop();
+    }
+  }
   
   if (parts.length === 0) return {};
   
